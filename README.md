@@ -1,13 +1,14 @@
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-[Wouter Steenbeek](http://www.woutersteenbeek.nl)
--------------------------------------------------
-
 Overview
 --------
 
 sppt is an [R](https://www.r-project.org) package that implements Martin Andresen's Spatial Point Pattern Test. It has been published [here](http://jrc.sagepub.com/content/48/1/58) (and elsewhere). The test measures the degree of similarity at the local level between two spatial point patterns and is an area-based test.
 
 This spatial point pattern test is not for the purpose of testing point patterns with the null hypotheses of random, uniform, or clustered distributions, but may be used to compare a particular point pattern with these distributions. One advantage of the test is that it can be performed for a number of different area boundaries using the same original point datasets.
+
+To cite package `sppt` in publications use:
+
+> Wouter Steenbeek, Christophe Vandeviver, Martin Andresen, Nicolas Malleson (2017). *sppt: Spatial Point Pattern Test*. R package version 0.1.4. URL: <https://github.com/wsteenbeek/sppt>
 
 Installation
 ------------
