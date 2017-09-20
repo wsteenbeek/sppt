@@ -1,0 +1,1 @@
+"0","plot(myoutput[which(myoutput$localS == -1),], col=""#2c7bb6"", add = TRUE)"

@@ -1,0 +1,40 @@
+Package: sppt
+Type: Package
+Title: Spatial Point Pattern Test
+Version: 0.1.4
+Authors@R: c(
+    person("Wouter", "Steenbeek", role = c("aut", "cre"), email = "wsteenbeek@nscr.nl"),
+    person("Christophe", "Vandeviver", role = c("aut"), email = "christophe.vandeviver@ugent.be"),
+    person("Martin", "Andresen", role = c("aut"), email = "andresen@sfu.ca"),
+    person("Nicolas", "Malleson", role = c("aut"), email = "n.s.malleson@leeds.ac.uk"))
+Author: Wouter Steenbeek [aut, cre],
+  Christophe Vandeviver [aut],
+  Martin Andresen [aut],
+  Nicolas Malleson [aut]
+Maintainer: Wouter Steenbeek <wsteenbeek@nscr.nl>
+Description: This is a point pattern test that measures the degree of 
+    similarity at the local level between two spatial point patterns 
+    and is an area-based test.
+    This spatial point pattern test is not for the purpose of testing 
+    point patterns with the null hypotheses of random, uniform, or 
+    clustered distributions, but may be used to compare a particular 
+    point pattern with these distributions. One advantage of the test 
+    is that it can be performed for a number of different area boundaries 
+    using the same original point datasets.
+    See http://www.sfu.ca/~andresen/spptest/spptest.html (Martin Andresen's 
+    website) for additional information and examples.
+Depends: 
+    R (>= 3.1.0),
+    sp (>= 1.2-3)
+Imports: stats
+Suggests:
+    microbenchmark (>= 1.4-2),
+    scales (>= 0.4.0),
+    knitr,
+    rmarkdown
+URL: http://www.sfu.ca/~andresen/spptest/spptest.html
+License: GPL-3
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 6.0.1
+VignetteBuilder: knitr
