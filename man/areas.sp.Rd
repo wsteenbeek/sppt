@@ -9,7 +9,7 @@
   \item{ID}{ID number of the area}
 }}
 \source{
-\url{https://github.com/sppt/sppt/tree/master/java/}
+\url{https://github.com/nickmalleson/spatialtest}
 }
 \usage{
 areas.sp

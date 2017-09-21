@@ -32,7 +32,7 @@ Suggests:
     scales (>= 0.4.0),
     knitr,
     rmarkdown
-URL: http://www.sfu.ca/~andresen/spptest/spptest.html
+URL: https://github.com/wsteenbeek/sppt
 License: GPL-3
 Encoding: UTF-8
 LazyData: true

@@ -6,7 +6,7 @@
 #' \describe{
 #'   \item{ID}{ID number of the area}
 #' }
-#' @source \url{https://github.com/sppt/sppt/tree/master/java/}
+#' @source \url{https://github.com/nickmalleson/spatialtest}
 "areas.sp"
 
 #' Base Points dataset: 9 points
@@ -20,7 +20,7 @@
 #'   \item{STATNUM}{Unimportant variable}
 #'   \item{ID}{ID number of the spatial point}
 #' }
-#' @source \url{https://github.com/sppt/sppt/tree/master/java/}
+#' @source \url{https://github.com/nickmalleson/spatialtest}
 "points1.sp"
 
 #' Test Points dataset: 10 points
@@ -34,7 +34,7 @@
 #'   \item{STATNUM}{Unimportant variable}
 #'   \item{ID}{ID number of the spatial point}
 #' }
-#' @source \url{https://github.com/sppt/sppt/tree/master/java/}
+#' @source \url{https://github.com/nickmalleson/spatialtest}
 "points2.sp"
 
 #' Vanvouver data: 108 spatial units of analysis

@@ -15,7 +15,7 @@ library(sppt)
 
 A description of the steps in the Spatial Point Pattern Test are described [here](http://www.sfu.ca/~andresen/spptest/spptest.html), and pseudocode can be found in several publications (linked to on the same website).
 
-[Nick Malleson](http://nickmalleson.co.uk) has programmed a [Java application](https://github.com/sppt/sppt/tree/master/java) for the SPPT, including a graphical user interface. The `sppt` R function was programmed by [Wouter Steenbeek](http://www.woutersteenbeek.nl) independently. This vignette compares the output of the R function and Java application, showing their differences.
+[Nick Malleson](http://nickmalleson.co.uk) has programmed a [Java application](https://github.com/nickmalleson/spatialtest) for the SPPT, including a graphical user interface. The `sppt` R function was programmed by [Wouter Steenbeek](http://www.woutersteenbeek.nl) independently. This vignette compares the output of the R function and Java application, showing their differences.
 
 ## Toy example data 
 
