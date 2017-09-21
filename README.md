@@ -44,14 +44,14 @@ The main function within the sppt package is also called `sppt`:
 
 ``` r
 set.seed(93255) # set seed for reproducibility
-output <- sppt(points1, points2, areas.sp)
+output <- sppt(points1.sp, points2.sp, areas.sp)
 ```
 
 The defaults of the `sppt` function are to randomly sampled 85 percent of the points, using 200 repetitions, and a 95 percent confidence interval. So the command above is the same as:
 
 ``` r
 set.seed(93255) # set seed for reproducibility
-output <- sppt(points1, points2, areas.sp,
+output <- sppt(points1.sp, points2.sp, areas.sp,
                nsamples=200, percpoints=85, conf_level=95)
 ```
 
