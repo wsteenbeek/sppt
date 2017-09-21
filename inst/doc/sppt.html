@@ -130,7 +130,7 @@ points2 &lt;-<span class="st"> </span>points2.sp[points2.sp$ID !=<span class="st
 <p>The <code>sppt</code> is an area-based test, so the points located outside the areas of interest are ignored. These points are colored grey. Let’s now run the R <code>sppt</code> function:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">39346</span>) <span class="co"># set seed for reproducibility</span>
 toy.sp &lt;-<span class="st"> </span><span class="kw">sppt</span>(points1, points2, areas.sp)</code></pre></div>
-<p>The defaults of the <code>sppt</code> function are to randomly sampled 85 percent of the points, using 200 repetitions, and a 95 percent confidence interval. So the command above is the same as:</p>
+<p>The defaults of the <code>sppt</code> function are to randomly sample 85 percent of the points, using 200 repetitions, and a 95 percent confidence interval. So the command above is the same as:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">39346</span>) <span class="co"># set seed for reproducibility</span>
 toy.sp &lt;-<span class="st"> </span><span class="kw">sppt</span>(points1, points2, areas.sp,
                <span class="dt">nsamples=</span><span class="dv">200</span>, <span class="dt">percpoints=</span><span class="dv">85</span>, <span class="dt">conf_level=</span><span class="dv">95</span>)</code></pre></div>
