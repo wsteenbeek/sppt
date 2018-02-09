@@ -27,9 +27,15 @@ distributions, but may be used to compare a particular point pattern with
 these distributions. One advantage of the test is that it can be performed for 
 a number of different area boundaries using the same original point datasets.
 
-To cite package `sppt` in publications use:
+In February 2018 a new test was added to the package courtesy of Andrew Wheeler, 
+leading toa change from version 0.1.4 to version 0.1.5. For version 0.1.4, please
+cite package 'sppt' in publications as:
 
-> Wouter Steenbeek, Christophe Vandeviver, Martin Andresen, Nicolas Malleson (2017). *sppt: Spatial Point Pattern Test*. R package version 0.1.4. URL: https://github.com/wsteenbeek/sppt
+> Steenbeek, W., Vandeviver, C. Andresen, M.A., Malleson, N. (2017). *sppt: Spatial Point Pattern Test*. R package version 0.1.4. URL: https://github.com/wsteenbeek/sppt
+
+For version 0.1.5, the updated reference is:
+
+> Steenbeek, W., Vandeviver, C. Andresen, M.A., Malleson, N., Wheeler, A. (2018). *sppt: Spatial Point Pattern Test*. R package version 0.1.5. URL: https://github.com/wsteenbeek/sppt
 
 ## Installation
 
@@ -63,7 +69,7 @@ points(points2.sp, col="red", pch = 15)
 
 The main function within the sppt package is also called `sppt`:
 
-```{r, eval = FALSE}
+```{r, eval = TRUE}
 set.seed(93255) # set seed for reproducibility
 output <- sppt(points1.sp, points2.sp, areas.sp)
 ```
@@ -76,6 +82,12 @@ command above is the same as:
 set.seed(93255) # set seed for reproducibility
 output <- sppt(points1.sp, points2.sp, areas.sp,
                nsamples=200, percpoints=85, conf_level=95)
+```
+
+You can see the results of the test by inspecting the SpatialPolygonsDataFrame:
+
+```{r, eval = TRUE}
+output@data
 ```
 
 The package includes vignettes explaining the sppt procedure in more detail;
