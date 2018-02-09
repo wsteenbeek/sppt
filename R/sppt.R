@@ -63,15 +63,18 @@ sppt <- function(base_points.sp, test_points.sp, uoa.sp, outputlist=FALSE, nsamp
   # Base data set:
   #################################
 
+  # keep only points that fall within a spatial unit of analysis
+  base_points <- base_points.sp[uoa.sp, ]
+
   # count number of base_points per areal unit
-  # base_points <- data.frame(uniqueid = uoa$uniqueid, nevents = colSums(gContains(uoa, base_points.sp, byid = TRUE)))
+  # base_points_per_unit <- data.frame(uniqueid = uoa$uniqueid, nevents = colSums(rgeos::gContains(uoa, base_points, byid = TRUE)))
 
   # count number of base_points per areal unit
   # save the results of the over function in a dataframe for later reference
-  basedata_over_results <- data.frame(point_id = 1:length(base_points.sp), uoa_id = sp::over(base_points.sp, uoa)$uoa_id)
+  basedata_over_results <- data.frame(point_id = 1:length(base_points), uoa_id = sp::over(base_points, uoa)$uoa_id)
 
   # number of points per unit (only for units that have any points)
-  npoints_per_uoa <- stats::aggregate(. ~ uoa_id, data = basedata_over_results, FUN=length)
+  npoints_per_uoa <- stats::aggregate(. ~ uoa_id, data = basedata_over_results, FUN = length)
 
   # base data outcome data.frame
   baseoutcome <- data.frame(uoa_id = uoa$uoa_id)
@@ -84,9 +87,12 @@ sppt <- function(base_points.sp, test_points.sp, uoa.sp, outputlist=FALSE, nsamp
   # Test data set:
   #################################
 
-  # count number of base_points per areal unit
+  # keep only points that fall within a spatial unit of analysis
+  test_points <- test_points.sp[uoa.sp, ]
+
+  # count number of test_points per areal unit
   # save the results of the over function in a dataframe for later reference
-  testdata_over_results <- data.frame(point_id = 1:length(test_points.sp), uoa_id = sp::over(test_points.sp, uoa)$uoa_id)
+  testdata_over_results <- data.frame(point_id = 1:length(test_points), uoa_id = sp::over(test_points, uoa)$uoa_id)
 
   # number of points per unit (only for units that have any points)
   npoints_per_uoa <- stats::aggregate(. ~ uoa_id, data = testdata_over_results, FUN=length)
@@ -99,7 +105,7 @@ sppt <- function(base_points.sp, test_points.sp, uoa.sp, outputlist=FALSE, nsamp
   testoutcome$perc <- with(testoutcome, nevents/sum(nevents)*100)
 
   # how many points need to be sampled in each iteration?
-  samplesize <- round((percpoints/100) * length(test_points.sp))
+  samplesize <- round((percpoints/100) * length(test_points))
 
   ## Function: for a sample of test points, calculate number of points in each unit of analysis
   calculate.testpoints.per.unit <- function(nsample){
@@ -216,7 +222,7 @@ sppt <- function(base_points.sp, test_points.sp, uoa.sp, outputlist=FALSE, nsamp
   } else {
     outcome <- list(sppt.sp = outcome.sp, simuls = allperc)
     # name of the first list element == the name of the basedata + "_" + name of the testdata
-    names(outcome)[1] <- paste0(deparse(substitute(base_points.sp)), "_", deparse(substitute(test_points.sp)))
+    names(outcome)[1] <- paste0(deparse(substitute(base_points)), "_", deparse(substitute(test_points)))
     return(outcome)
   }
 
