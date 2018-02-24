@@ -54,7 +54,7 @@ toy_java_df <- toy_java@data[order(as.numeric(as.character(toy_java$ID))),]
 toy_java_df
 ```
 
-Let's now run the R `sppt` function:
+Let's now run the R `sppt()` function:
 
 ```{r}
 set.seed(39346) # set seed for reproducibility
@@ -132,7 +132,7 @@ The S-Index 'global S value' can be reproduced by taking the mean of the absolut
 1 - mean(abs(toy_java_df$SIndex))
 ```
 
-The R `sppt` function:
+The R `sppt()` function:
 
 ```{r}
 set.seed(39346) # set seed for reproducibility
@@ -145,13 +145,13 @@ The standard and robust global S-values are included in the resulting spatial ob
 toy_r_new@data
 ```
 
-These S-values can also be accessed through the convenience function `summary.sppt`:
+These S-values can also be accessed through the convenience function `summary.sppt()`:
 
 ```{r}
 summary.sppt(toy_r_new)
 ```
 
-We see that the `sppt` R function can reproduce the Java output exactly.
+We see that the `sppt()` R function can reproduce the Java output exactly.
 
 
 ## Vancouver example data 
@@ -196,7 +196,7 @@ The R function takes between **2 and 3 seconds**, a massive speed increase compa
 
 ### Preliminary checks
 
-The `sppt` function call is:
+The `sppt()` function call is:
 
 ```{r}
 set.seed(39346) # set seed for reproducibility
@@ -241,7 +241,7 @@ The Java application produced the following output on screen:
 > 
 > Have read in 14584 base points, 14782 test points (12565 test point used) and 108 areas.
 
-The S-values created by the `sppt` function are:
+The S-values created by the `sppt()` function are:
 
 ```{r}
 summary.sppt(vancouver_r)
@@ -268,9 +268,9 @@ vancouver_java_df[differences, c("CTUID", "PctBsePts","PctTstPts","ConfLowP","Co
 
 The confidence intervals for the R output are just slightly different, leading to a conclusion of change, as the PctBsePts values fall within the confidence interval between ConfLowP and ConfUppP in the R output, whereas they are just outside the interval of ConfLowP and ConfUppP of the Java output.
 
-Because SPPT is a simulation-based test, the results can be slightly different every time. The R function is reproducible by using `set.seed`, but the Java application is not. If this is a reasonable explanation for the difference, then we can find the exact ConfLowP and ConfUppP as reported by the Java application in the R output, as long as we replicate the `sppt` function often enough.
+Because SPPT is a simulation-based test, the results can be slightly different every time. The R function is reproducible by using `set.seed()`, but the Java application is not. If this is a reasonable explanation for the difference, then we can find the exact ConfLowP and ConfUppP as reported by the Java application in the R output, as long as we replicate the `sppt()` function often enough.
 
-Let's try 10 replications of the `sppt` function (note that the defaults of the `sppt` function are 200 iterations, 85% sample size, 95% confidence interval, so we don't have to include these in the function call):
+Let's try 10 replications of the `sppt()` function (note that the defaults of the `sppt()` function are 200 iterations, 85% sample size, 95% confidence interval, so we don't have to include these in the function call):
 
 ```{r}
 set.seed(85335)
@@ -278,7 +278,7 @@ reps.output <- replicate(10, sppt(vancouver_points1.sp, vancouver_points2.sp, va
 reps.output <- lapply(c("ConfLowP", "ConfUppP"), function(y) do.call(cbind, sapply(reps.output, function(x) x@data[y])))
 ```
 
-`reps.output` is a list with the first element referring to ConfLowP, consisting of `r nrow(reps.output[[1]])` rows (= one for each area) and `r ncol(reps.output[[1]])` columns (= the replications). The second list element is of equal size, but refers to ConfUppP. As an example: suppose we run the `sppt` function 20 times, then the following `r ncol(reps.output[[1]])` possible ConfLowP were calculated for the 52nd area:
+`reps.output` is a list with the first element referring to ConfLowP, consisting of `r nrow(reps.output[[1]])` rows (= one for each area) and `r ncol(reps.output[[1]])` columns (= the replications). The second list element is of equal size, but refers to ConfUppP. As an example: suppose we run the `sppt()` function 20 times, then the following `r ncol(reps.output[[1]])` possible ConfLowP were calculated for the 52nd area:
 
 ```{r}
 as.numeric(reps.output[[1]][52,])
@@ -314,4 +314,4 @@ table(sapply(1:nrow(vancouver_java_df), function(x) {vancouver_java_df$ConfLowP[
 table(sapply(1:nrow(vancouver_java_df), function(x) {vancouver_java_df$ConfUppP[x] %in% reps.output[[2]][x,]} ))
 ```
 
-Now **all** of the Java application's output is reproduced exactly by the R `sppt` function. We conclude that just by chance, the R output of one function call can give different results than the Java output, but this is to be expected as the SPPT is a simulation-based test.
+Now **all** of the Java application's output is reproduced exactly by the R `sppt()` function. We conclude that just by chance, the R output of one function call can give different results than the Java output, but this is to be expected as the SPPT is a simulation-based test.

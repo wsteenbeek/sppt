@@ -64,7 +64,7 @@ The output of the test consists of two parts. First, there are the Indices of Si
 library(sppt)
 ```
 
-Spatial objects areas.sp, points1.sp, and points2.sp, from now on referred to as the 'toy data', are included in the package and will be used to illustrate the `sppt` function.
+Spatial objects areas.sp, points1.sp, and points2.sp, from now on referred to as the 'toy data', are included in the package and will be used to illustrate the `sppt()` function.
 
 ```{r, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"}
 plot(areas.sp)
@@ -96,14 +96,14 @@ text(coordinates(areas.sp), label = areas.sp$ID, font = 2)
 
 ### Running the function
 
-The `sppt` is an area-based test, so the points located outside the areas of interest are ignored. These points are colored grey. Let's now run the R `sppt` function:
+The `sppt` is an area-based test, so the points located outside the areas of interest are ignored. These points are colored grey. Let's now run the R `sppt()` function:
 
 ```{r}
 set.seed(39346) # set seed for reproducibility
 toy.sp <- sppt(points1, points2, areas.sp)
 ```
 
-The defaults of the `sppt` function are to randomly sample 85 percent of the 
+The defaults of the `sppt()` function are to randomly sample 85 percent of the 
 points, using 200 repetitions, and a 95 percent confidence interval. So the
 command above is the same as:
 
