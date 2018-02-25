@@ -20,7 +20,7 @@ toy.sp@data
 toy2.sp@data
 
 ## ------------------------------------------------------------------------
-# use `install.packages("rgdal")` if not already installed
+if(!require(rgdal)) install.packages("rgdal")
 
 burglary2003 <- rgdal::readOGR(dsn = "../inst/extdata", layer = "Vancouver_Residential_Burglary_2003") # The shapefiles are found in the "inst/extdata" folder within the package
 burglary2016 <- rgdal::readOGR(dsn = "../inst/extdata", layer = "Vancouver_Residential_Burglary_2016")
@@ -44,12 +44,15 @@ mean(myoutput_sppt$globalS)
 mean(myoutput_boot$globalS)
 mean(myoutput_diff$globalS)
 
-## ------------------------------------------------------------------------
-# use `install.packages("maptools")` if not already installed
+## ---- echo = FALSE, eval = TRUE, warning = FALSE, message = FALSE--------
+if(!require(maptools)) install.packages("maptools")
+if(!require(spatstat)) install.packages("spatstat")
+
+## ---- eval = TRUE, warning = FALSE, message = FALSE----------------------
 library("maptools", quietly = TRUE)
-# use `install.packages("spatstat")` if not already installed
 library("spatstat", quietly = TRUE)
 
+## ---- eval = TRUE--------------------------------------------------------
 # simulate point patterns
 das.owin <- as.owin(das)
 west <- das.owin$xrange[1]
@@ -66,14 +69,14 @@ pts2 <- as(pts2, "SpatialPoints")
 proj4string(pts2) <- proj4string(das)
 
 ## ---- fig.height = 6, fig.width = 6, fig.align = "center"----------------
-# use `install.packages("scales")` if not already installed
+if(!require(scales)) install.packages("scales")
 
 plot(das)
 points(pts1, col=scales::alpha("blue", .3), pch=16, cex=.1)
 points(pts2, col=scales::alpha("red", .3), pch=16, cex=.1)
 
 ## ------------------------------------------------------------------------
-# use `install.packages("rgeos")` if not already installed
+if(!require(rgeos)) install.packages("rgeos")
 
 # Select the areal units containing 100 or more points (of both Base and Test)
 das2 <- das[as.numeric(which(colSums(rgeos::gContains(das, pts1, byid = TRUE)) >= 100)), ]

@@ -35,7 +35,7 @@ toy.sp@data
 summary.sppt(toy.sp)
 
 ## ------------------------------------------------------------------------
-# use `install.packages("rgdal")` if not already installed
+if(!require(rgdal)) install.packages("rgdal")
 
 burglary2003 <- rgdal::readOGR(dsn = "../inst/extdata", layer = "Vancouver_Residential_Burglary_2003") # The shapefiles are found in the "inst/extdata" folder within the package
 burglary2016 <- rgdal::readOGR(dsn = "../inst/extdata", layer = "Vancouver_Residential_Burglary_2016")

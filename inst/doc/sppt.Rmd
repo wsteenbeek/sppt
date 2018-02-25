@@ -170,7 +170,7 @@ variables are available:
 | Y     | y-coordinate for the location where the event took place      |
 
 ```{r}
-# use `install.packages("rgdal")` if not already installed
+if(!require(rgdal)) install.packages("rgdal")
 
 burglary2003 <- rgdal::readOGR(dsn = "../inst/extdata", layer = "Vancouver_Residential_Burglary_2003") # The shapefiles are found in the "inst/extdata" folder within the package
 burglary2016 <- rgdal::readOGR(dsn = "../inst/extdata", layer = "Vancouver_Residential_Burglary_2016")

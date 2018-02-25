@@ -307,7 +307,7 @@ toy.sp &lt;-<span class="st"> </span><span class="kw">sppt</span>(points1, point
 </tr>
 </tbody>
 </table>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># use `install.packages(&quot;rgdal&quot;)` if not already installed</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span>(<span class="op">!</span><span class="kw">require</span>(rgdal)) <span class="kw">install.packages</span>(<span class="st">&quot;rgdal&quot;</span>)
 
 burglary2003 &lt;-<span class="st"> </span>rgdal<span class="op">::</span><span class="kw">readOGR</span>(<span class="dt">dsn =</span> <span class="st">&quot;../inst/extdata&quot;</span>, <span class="dt">layer =</span> <span class="st">&quot;Vancouver_Residential_Burglary_2003&quot;</span>) <span class="co"># The shapefiles are found in the &quot;inst/extdata&quot; folder within the package</span></code></pre></div>
 <pre><code>## OGR data source with driver: ESRI Shapefile 

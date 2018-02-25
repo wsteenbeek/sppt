@@ -151,7 +151,7 @@ toy_r<span class="op">@</span>data</code></pre></div>
 <p>As you can see in the figure above, there are 9 base points in total, and 10 test points in total. But in each points dataset, there is one point outside the polygon areas.</p>
 <p>In the R code, a point that lies outside the areas is ignored completely. So it is not included when counting the number of points per areal unit, and it is also not included for the calculation of the percentage of points per unit (i.e. in the denominator). In contrast, the Java app <em>includes</em> a point that is located outside the areal units in the denominator. The R code is correct, because we are interested in the increase/decrease of event occurrence <em>in a particular set of areal units</em>. By including events outside the areal units under study, the percentages within the areal units don’t make much sense anymore.</p>
 <p>In this toy example, the consequences aren’t noteworthy. But let’s simulate extra data points to produce a crime hot spot a bit further away, i.e. <em>away from the areal units the researcher is interested in</em>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># use `install.packages(&quot;scales&quot;)` if not already installed</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span>(<span class="op">!</span><span class="kw">require</span>(scales)) <span class="kw">install.packages</span>(<span class="st">&quot;scales&quot;</span>)
 
 <span class="kw">plot</span>(areas.sp)
 <span class="kw">points</span>(points1.sp, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)
@@ -255,7 +255,7 @@ Vancouver Test points
 <h3>Speed difference</h3>
 <p>The Java application (200 iterations, 85% sample size, 95% confidence interval) takes about <strong>50 seconds</strong> on an Intel Core i7-3770 CPU @ 3.40 Ghz, with 32 Gb RAM, and Windows 7 Professional.</p>
 <p>The <code>microbenchmark</code> package is used to provide an estimate of the R function’s processing time:</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co"># use `install.packages(&quot;microbenchmark&quot;)` if not already installed</span>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span>(<span class="op">!</span><span class="kw">require</span>(microbenchmark)) <span class="kw">install.packages</span>(<span class="st">&quot;microbenchmark&quot;</span>)
 
 microbenchmark<span class="op">::</span><span class="kw">microbenchmark</span>(<span class="kw">sppt</span>(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp, <span class="dt">nsamples=</span><span class="dv">200</span>, <span class="dt">percpoints=</span><span class="dv">85</span>, <span class="dt">conf_level=</span><span class="dv">95</span>), <span class="dt">times =</span> 50L, <span class="dt">unit =</span> <span class="st">&quot;s&quot;</span>)</code></pre></div>
 <p>The R function takes between <strong>2 and 3 seconds</strong>, a massive speed increase compared to the Java application.</p>

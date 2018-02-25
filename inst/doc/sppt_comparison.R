@@ -22,7 +22,7 @@ toy_r <- sppt(points1.sp, points2.sp, areas.sp)
 toy_r@data
 
 ## ---- eval = TRUE, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"----
-# use `install.packages("scales")` if not already installed
+if(!require(scales)) install.packages("scales")
 
 plot(areas.sp)
 points(points1.sp, col="blue", pch = 19)
@@ -76,7 +76,7 @@ vancouver_points1.sp <- vancouver_points1.sp[vancouver_areas.sp, ]
 vancouver_points2.sp <- vancouver_points2.sp[vancouver_areas.sp, ]
 
 ## ---- eval = FALSE-------------------------------------------------------
-#  # use `install.packages("microbenchmark")` if not already installed
+#  if(!require(microbenchmark)) install.packages("microbenchmark")
 #  
 #  microbenchmark::microbenchmark(sppt(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp, nsamples=200, percpoints=85, conf_level=95), times = 50L, unit = "s")
 
