@@ -1,10 +1,10 @@
 ---
-title: "Spatial Point Pattern Test (SPPT): improved functions as per Wheeler et al. (2018)"
+title: "Proportion difference tests"
 author: "Wouter Steenbeek & Andrew Wheeler"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Proportion difference tests}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

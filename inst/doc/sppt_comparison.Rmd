@@ -1,10 +1,10 @@
 ---
-title: "Comparing SPPT output: R vs Java"
+title: "Comparing R vs Java"
 author: "Wouter Steenbeek"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteIndexEntry{Comparing R vs Java}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
