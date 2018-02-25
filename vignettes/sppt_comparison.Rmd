@@ -68,7 +68,7 @@ In the R code, a point that lies outside the areas is ignored completely. So it 
 In this toy example, the consequences aren't noteworthy. But let's simulate extra data points to produce a crime hot spot a bit further away, i.e. *away from the areal units  the researcher is interested in*.
 
 ```{r, eval = TRUE, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"}
-if(!require(scales)) install.packages("scales")
+if(!require(scales)) install.packages("scales", repos = "https://cloud.r-project.org/")
 
 plot(areas.sp)
 points(points1.sp, col="blue", pch = 19)
@@ -186,7 +186,7 @@ The Java application (200 iterations, 85% sample size, 95% confidence interval) 
 The `microbenchmark` package is used to provide an estimate of the R function's processing time:
 
 ```{r, eval = FALSE}
-if(!require(microbenchmark)) install.packages("microbenchmark")
+if(!require(microbenchmark)) install.packages("microbenchmark", repos = "https://cloud.r-project.org/")
 
 microbenchmark::microbenchmark(sppt(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp, nsamples=200, percpoints=85, conf_level=95), times = 50L, unit = "s")
 ```

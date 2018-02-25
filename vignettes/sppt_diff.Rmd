@@ -87,7 +87,7 @@ This function addresses all limitations noted by Wheeler et al. (2018): (1) the 
 We first use the data already used in vignette `sppt`:
 
 ```{r}
-if(!require(rgdal)) install.packages("rgdal")
+if(!require(rgdal)) install.packages("rgdal", repos = "https://cloud.r-project.org/")
 
 burglary2003 <- rgdal::readOGR(dsn = "../inst/extdata", layer = "Vancouver_Residential_Burglary_2003") # The shapefiles are found in the "inst/extdata" folder within the package
 burglary2016 <- rgdal::readOGR(dsn = "../inst/extdata", layer = "Vancouver_Residential_Burglary_2016")
@@ -129,8 +129,8 @@ The differences in outcomes are massive!
 It is difficult to interpret the differences reported above because the points datasets differ a lot in size; there are areal units with 0 points; and there are also many areal units with only a few points. For a better comparison, we hack some simulated data together:
 
 ```{r, echo = FALSE, eval = TRUE, warning = FALSE, message = FALSE}
-if(!require(maptools)) install.packages("maptools")
-if(!require(spatstat)) install.packages("spatstat")
+if(!require(maptools)) install.packages("maptools", repos = "https://cloud.r-project.org/")
+if(!require(spatstat)) install.packages("spatstat", repos = "https://cloud.r-project.org/")
 ```
 
 ```{r, eval = TRUE, warning = FALSE, message = FALSE}
@@ -158,7 +158,7 @@ proj4string(pts2) <- proj4string(das)
 The resulting point patterns are both concentrated mostly in the western part of Vancouver.
 
 ```{r, fig.height = 6, fig.width = 6, fig.align = "center"}
-if(!require(scales)) install.packages("scales")
+if(!require(scales)) install.packages("scales", repos = "https://cloud.r-project.org/")
 
 plot(das)
 points(pts1, col=scales::alpha("blue", .3), pch=16, cex=.1)
@@ -168,7 +168,7 @@ points(pts2, col=scales::alpha("red", .3), pch=16, cex=.1)
 For the purposes of this test, we remove areal units that have fewer than 100 points in either Base or Test:
 
 ```{r}
-if(!require(rgeos)) install.packages("rgeos")
+if(!require(rgeos)) install.packages("rgeos", repos = "https://cloud.r-project.org/")
 
 # Select the areal units containing 100 or more points (of both Base and Test)
 das2 <- das[as.numeric(which(colSums(rgeos::gContains(das, pts1, byid = TRUE)) >= 100)), ]
