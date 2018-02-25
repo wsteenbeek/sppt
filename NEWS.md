@@ -16,6 +16,12 @@
   contrast to the original `sppt()`, the results of the test are not dependent
   on which dataset is selected as Base and which is selected as Test.
 
+## Misc
+
+* Changed README.md and vignettes to facilitate easier building of vignettes on 
+  local machine.
+  
+
 # sppt 0.1.4
 
 First published version of the `sppt` package. Includes function `sppt()`.

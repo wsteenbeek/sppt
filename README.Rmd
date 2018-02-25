@@ -64,7 +64,7 @@ Spatial objects areas.sp, points1.sp, and points2.sp, are included in the
 package. For example, you can think of these as neighborhoods and the locations
 where crimes occur in two different years.
 
-```{r example}
+```{r, eval = TRUE, warning = FALSE, message = FALSE}
 library(sppt)
 plot(areas.sp)
 points(points1.sp, col="blue", pch = 19)
@@ -98,6 +98,8 @@ You can see the results of the test by inspecting the SpatialPolygonsDataFrame, 
 output@data
 ```
 
+## Vignettes
+
 The package includes vignettes explaining the sppt procedure in more detail;
 a worked example of a toy dataset and actual crime data; a comparison
 between this R package and an existing Java application that has been written by 
@@ -106,17 +108,40 @@ and `sppt_diff()`.
 
 You can view which vignettes are available using:
 
-```{r}
-vignette(package = "sppt")
+```{r, eval = FALSE}
+browseVignettes("sppt")
 ```
 
-You can read the vignettes using:
+To save time and because they may require additional packages, `devtools::install_github()` will not build vignettes by default. If the command above returns that vignettes are not found, you need to take a few additional steps.
+
+1. Install the rmarkdown package with `install.packages("rmarkdown")`
+
+2. [Install pandoc](http://johnmacfarlane.net/pandoc/installing.html) (and afterwards restart your computer)
+
+3. Then, install the package again but force building of the vignettes using `devtools::install_github("wsteenbeek/sppt", build_vignettes = TRUE, force = TRUE)`. This will take a few minutes.
+
+You should now be able to view which vignettes are available using:
+
+```{r, eval = FALSE}
+browseVignettes("sppt")
+```
+
+To directly read the vignettes rather than going through `browseVignettes("sppt")` you can use:
 
 ```{r, eval = FALSE}
 vignette("sppt", package = "sppt")
 vignette("sppt_comparison", package = "sppt")
 vignette("sppt_diff", package = "sppt")
 ```
+
+If the above still doesn't work, then a quick-fix is to just view the vignettes online using the [GitHub HTML Preview service](http://htmlpreview.github.io/):
+
+1. [sppt](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/inst/doc/sppt.html)
+
+2. [sppt_comparison](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/inst/doc/sppt_comparison.html)
+
+3. [sppt_diff](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/inst/doc/sppt_diff.html)
+
 
 ## License
 

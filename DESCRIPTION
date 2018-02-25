@@ -28,10 +28,14 @@ Depends:
     sp (>= 1.2-3)
 Imports: stats
 Suggests:
-    microbenchmark (>= 1.4-2),
-    scales (>= 0.4.0),
     knitr,
-    rmarkdown
+    maptools,
+    microbenchmark (>= 1.4-2),
+    rgdal (>= 1.2-16),
+    rgeos (>= 0.3-26),
+    rmarkdown,
+    scales (>= 0.4.0),
+    spatstat (>= 1.55-0)
 URL: https://github.com/wsteenbeek/sppt
 License: GPL-3
 Encoding: UTF-8

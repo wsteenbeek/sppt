@@ -18,7 +18,7 @@ This test would be used if you are fundamentally interested in the similarity of
 
 ## Brief explanation of SPPT procedure
 
-Though conceptually simple, this test is simulation-based so it is computationally intense. The test is computed in this R library as follows:
+Though conceptually simple, this test is simulation-based so it is computationally intense. The test is computed in this R package as follows:
 
 1. Nominate a base dataset and count, for each area, the number of points that fall within it. This base dataset may also be thought of as your reference dataset. Which data to you want to look for difference from? If you are interested in change over time with 2015 and 2016 data, the 2015 data will be your base data set.
 
@@ -60,8 +60,8 @@ The output of the test consists of two parts. First, there are the Indices of Si
 
 ## Toy example data
 
-```{r, echo = FALSE, message = FALSE}
-library(sppt)
+```{r, eval = TRUE, warning = FALSE, message = FALSE}
+library("sppt")
 ```
 
 Spatial objects areas.sp, points1.sp, and points2.sp, from now on referred to as the 'toy data', are included in the package and will be used to illustrate the `sppt()` function.
@@ -140,7 +140,7 @@ toy.sp@data
 | similarity.robust     | the robust version of the variable “similarity”, with a value of “NA” if “SumBseTstPts” is zero       |
 | globalS.robust     | the robust global S-index value for the test, the same value for each unit of analysis, with a value of “NA” if “SumBseTstPts” is zero      |
 
-The standard and robust global S-values can be extracted as such, respectively: `mean(toy.sp$globalS)` and `mean(toy.sp$globalS.robust, na.rm=TRUE)`. A convenience function is provided to output these values:
+The standard and robust global S-values can be extracted as such, respectively: `mean(toy.sp$globalS)` and `mean(toy.sp$globalS.robust, na.rm=TRUE)`. A convenience function is provided to output these values in a list:
 
 ```{r}
 summary.sppt(toy.sp)
@@ -149,7 +149,7 @@ summary.sppt(toy.sp)
 
 ## An example importing data for use in sppt
 
-In order to import your own spatial data into R, the library `rgdal` will need to be installed. In the next example, residential burglary data from the Vancouver Police Department (2003 and 2016) are used, as well as census boundary units (dissemination areas) from Statistics Canada.
+In order to import your own spatial data into R, the package `rgdal` will need to be installed. In the next example, residential burglary data from the Vancouver Police Department (2003 and 2016) are used, as well as census boundary units (dissemination areas) from Statistics Canada.
 
 A dissemination area is a small relatively small geographic area composed of one or more neighbouring dissemination blocks, with a population of 400 to 700 persons. All of Canada is divided into dissemination areas. It is the smallest standard geographic area for which all census data are disseminated. Dissemination areas cover all the territory of Canada. They are available for free download [here](http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-2016-eng.cfm).
 
@@ -206,7 +206,7 @@ mean(myoutput$globalS.robust, na.rm=TRUE)
 head(myoutput@data, n=10) # the first 10 cases of data
 ```
 
-The output of the sppt can be easily mapped, here simply using the `plot` command (but see the [ggplot2](https://CRAN.R-project.org/package=ggplot2) library):
+The output of the sppt can be easily mapped, here simply using the `plot` command (but see the [ggplot2](https://CRAN.R-project.org/package=ggplot2) package):
 
 ```{r, fig.height = 6, fig.width = 6, fig.align = "center"}
 plot(myoutput)
@@ -219,7 +219,7 @@ Blue refers to a statistically significant decrease between 2003 and 2016 in the
 
 The output of the test (including all the variables) can be exported as a shapefile:
 
-```
+```{r, eval = FALSE}
 rgdal::writeOGR(obj = myoutput, dsn = "C:/My/File/Path/Here", layer = "Burglary_2003_2016_DAs_SPPT", driver = "ESRI Shapefile")
 ```
 

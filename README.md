@@ -40,14 +40,12 @@ Spatial objects areas.sp, points1.sp, and points2.sp, are included in the packag
 
 ``` r
 library(sppt)
-#> Loading required package: sp
-#> Warning: package 'sp' was built under R version 3.4.3
 plot(areas.sp)
 points(points1.sp, col="blue", pch = 19)
 points(points2.sp, col="red", pch = 15)
 ```
 
-![](man/figures/README-example-1.png)
+![](man/figures/README-unnamed-chunk-4-1.png)
 
 The original function within the sppt package is also called `sppt`:
 
@@ -97,21 +95,46 @@ output@data
 #> 5             0                 1      0.8333333
 ```
 
+Vignettes
+---------
+
 The package includes vignettes explaining the sppt procedure in more detail; a worked example of a toy dataset and actual crime data; a comparison between this R package and an existing Java application that has been written by [Nick Malleson](http://nickmalleson.co.uk/); and the new functions `sppt_boot()` and `sppt_diff()`.
 
 You can view which vignettes are available using:
 
 ``` r
-vignette(package = "sppt")
+browseVignettes("sppt")
 ```
 
-You can read the vignettes using:
+To save time and because they may require additional packages, `devtools::install_github()` will not build vignettes by default. If the command above returns that vignettes are not found, you need to take a few additional steps.
+
+1.  Install the rmarkdown package with `install.packages("rmarkdown")`
+
+2.  [Install pandoc](http://johnmacfarlane.net/pandoc/installing.html) (and afterwards restart your computer)
+
+3.  Then, install the package again but force building of the vignettes using `devtools::install_github("wsteenbeek/sppt", build_vignettes = TRUE, force = TRUE)`. This will take a few minutes.
+
+You should now be able to view which vignettes are available using:
+
+``` r
+browseVignettes("sppt")
+```
+
+To directly read the vignettes rather than going through `browseVignettes("sppt")` you can use:
 
 ``` r
 vignette("sppt", package = "sppt")
 vignette("sppt_comparison", package = "sppt")
 vignette("sppt_diff", package = "sppt")
 ```
+
+If the above still doesn't work, then a quick-fix is to just view the vignettes online using the [GitHub HTML Preview service](http://htmlpreview.github.io/):
+
+1.  [sppt](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/inst/doc/sppt.html)
+
+2.  [sppt\_comparison](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/inst/doc/sppt_comparison.html)
+
+3.  [sppt\_diff](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/inst/doc/sppt_diff.html)
 
 License
 -------

@@ -1,5 +1,5 @@
-## ---- echo = FALSE, message = FALSE--------------------------------------
-library(sppt)
+## ---- eval = TRUE, warning = FALSE, message = FALSE----------------------
+library("sppt")
 
 ## ---- fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"----
 plot(areas.sp)
@@ -66,4 +66,7 @@ plot(myoutput)
 plot(myoutput[which(myoutput$localS == -1),], col="#2c7bb6", add = TRUE)
 plot(myoutput[which(myoutput$localS == 1),], col="#d7191c", add = TRUE)
 plot(myoutput[which(myoutput$localS == 0),], col="#ffffbf", add = TRUE)
+
+## ---- eval = FALSE-------------------------------------------------------
+#  rgdal::writeOGR(obj = myoutput, dsn = "C:/My/File/Path/Here", layer = "Burglary_2003_2016_DAs_SPPT", driver = "ESRI Shapefile")
 

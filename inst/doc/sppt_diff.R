@@ -1,7 +1,5 @@
-## ---- echo = FALSE, message = FALSE--------------------------------------
-library(sppt)
-
-## ---- fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"----
+## ---- eval = TRUE, warning = FALSE, message = FALSE, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"----
+library("sppt")
 plot(areas.sp)
 points1 <- points1.sp[areas.sp, ]
 points2 <- points2.sp[areas.sp, ]
@@ -48,9 +46,9 @@ mean(myoutput_diff$globalS)
 
 ## ------------------------------------------------------------------------
 # use `install.packages("maptools")` if not already installed
-library(maptools, quietly = TRUE)
+library("maptools", quietly = TRUE)
 # use `install.packages("spatstat")` if not already installed
-library(spatstat, quietly = TRUE)
+library("spatstat", quietly = TRUE)
 
 # simulate point patterns
 das.owin <- as.owin(das)
@@ -68,11 +66,15 @@ pts2 <- as(pts2, "SpatialPoints")
 proj4string(pts2) <- proj4string(das)
 
 ## ---- fig.height = 6, fig.width = 6, fig.align = "center"----------------
+# use `install.packages("scales")` if not already installed
+
 plot(das)
-points(pts1, col=scales::alpha("blue", .4), pch=16, cex=.1)
-points(pts2, col=scales::alpha("red", .4), pch=16, cex=.1)
+points(pts1, col=scales::alpha("blue", .3), pch=16, cex=.1)
+points(pts2, col=scales::alpha("red", .3), pch=16, cex=.1)
 
 ## ------------------------------------------------------------------------
+# use `install.packages("rgeos")` if not already installed
+
 # Select the areal units containing 100 or more points (of both Base and Test)
 das2 <- das[as.numeric(which(colSums(rgeos::gContains(das, pts1, byid = TRUE)) >= 100)), ]
 das2 <- das2[as.numeric(which(colSums(rgeos::gContains(das2, pts2, byid = TRUE)) >= 100)), ]
@@ -84,8 +86,8 @@ pts2.sp <- pts2[das2, ]
 ## ---- fig.height = 6, fig.width = 6, fig.align = "center"----------------
 # Plot
 plot(das2)
-points(pts1.sp, col=scales::alpha("blue", .4), pch=16, cex=.1)
-points(pts2.sp, col=scales::alpha("red", .4), pch=16, cex=.1)
+points(pts1.sp, col=scales::alpha("blue", .3), pch=16, cex=.1)
+points(pts2.sp, col=scales::alpha("red", .3), pch=16, cex=.1)
 
 ## ------------------------------------------------------------------------
 set.seed(547347)

@@ -1,7 +1,5 @@
-## ---- echo = FALSE, message = FALSE--------------------------------------
-library(sppt)
-
-## ---- fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"----
+## ---- eval = TRUE, warning = FALSE, message = FALSE, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"----
+library("sppt")
 plot(areas.sp)
 points(points1.sp, col="blue", pch = 19)
 points(points2.sp, col="red", pch = 15)
@@ -23,14 +21,16 @@ set.seed(39346) # set seed for reproducibility
 toy_r <- sppt(points1.sp, points2.sp, areas.sp)
 toy_r@data
 
-## ---- echo = FALSE, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"----
+## ---- eval = TRUE, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"----
+# use `install.packages("scales")` if not already installed
+
 plot(areas.sp)
 points(points1.sp, col="blue", pch = 19)
 points(points2.sp, col="red", pch = 15)
 set.seed(345)
-if (requireNamespace("scales", quietly = TRUE)) {
-  points(x = jitter(rep(bbox(points1.sp)[3]+150, times=50), factor=0.008), y = jitter(rep(bbox(points1.sp)[2]-50, times=50), factor=0.008), col=scales::alpha("blue", 0.6), pch=16)
-}
+points(x = jitter(rep(bbox(points1.sp)[3]+150, times=50), factor=0.008), 
+       y = jitter(rep(bbox(points1.sp)[2]-50, times=50), factor=0.008), 
+       col=scales::alpha("blue", 0.6), pch=16)
 text(coordinates(areas.sp), label = areas.sp$ID, font = 2)
 
 ## ---- echo = FALSE-------------------------------------------------------
@@ -76,9 +76,9 @@ vancouver_points1.sp <- vancouver_points1.sp[vancouver_areas.sp, ]
 vancouver_points2.sp <- vancouver_points2.sp[vancouver_areas.sp, ]
 
 ## ---- eval = FALSE-------------------------------------------------------
-#  if (requireNamespace("microbenchmark", quietly = TRUE)) {
-#    microbenchmark::microbenchmark(sppt(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp, nsamples=200, percpoints=85, conf_level=95), times = 50L, unit = "s")
-#  }
+#  # use `install.packages("microbenchmark")` if not already installed
+#  
+#  microbenchmark::microbenchmark(sppt(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp, nsamples=200, percpoints=85, conf_level=95), times = 50L, unit = "s")
 
 ## ------------------------------------------------------------------------
 set.seed(39346) # set seed for reproducibility

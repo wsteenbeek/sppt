@@ -9,10 +9,6 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, echo = FALSE, message = FALSE}
-library(sppt)
-```
-
 A description of the steps in the Spatial Point Pattern Test are described [here](http://www.sfu.ca/~andresen/spptest/spptest.html), and pseudocode can be found in several publications (linked to on the same website).
 
 [Nick Malleson](http://nickmalleson.co.uk) has programmed a [Java application](https://github.com/nickmalleson/spatialtest) for the SPPT, including a graphical user interface. The `sppt` R function was programmed by [Wouter Steenbeek](http://www.woutersteenbeek.nl) independently. This vignette compares the output of the R function and Java application, showing their differences.
@@ -21,7 +17,8 @@ A description of the steps in the Spatial Point Pattern Test are described [here
 
 Spatial objects areas.sp, points1.sp, and points2.sp can be used for a quick comparison of the R and Java implementation.
 
-```{r, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"}
+```{r, eval = TRUE, warning = FALSE, message = FALSE, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"}
+library("sppt")
 plot(areas.sp)
 points(points1.sp, col="blue", pch = 19)
 points(points2.sp, col="red", pch = 15)
@@ -70,14 +67,16 @@ In the R code, a point that lies outside the areas is ignored completely. So it 
 
 In this toy example, the consequences aren't noteworthy. But let's simulate extra data points to produce a crime hot spot a bit further away, i.e. *away from the areal units  the researcher is interested in*.
 
-```{r, echo = FALSE, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"}
+```{r, eval = TRUE, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"}
+# use `install.packages("scales")` if not already installed
+
 plot(areas.sp)
 points(points1.sp, col="blue", pch = 19)
 points(points2.sp, col="red", pch = 15)
 set.seed(345)
-if (requireNamespace("scales", quietly = TRUE)) {
-  points(x = jitter(rep(bbox(points1.sp)[3]+150, times=50), factor=0.008), y = jitter(rep(bbox(points1.sp)[2]-50, times=50), factor=0.008), col=scales::alpha("blue", 0.6), pch=16)
-}
+points(x = jitter(rep(bbox(points1.sp)[3]+150, times=50), factor=0.008), 
+       y = jitter(rep(bbox(points1.sp)[2]-50, times=50), factor=0.008), 
+       col=scales::alpha("blue", 0.6), pch=16)
 text(coordinates(areas.sp), label = areas.sp$ID, font = 2)
 ```
 
@@ -187,9 +186,9 @@ The Java application (200 iterations, 85% sample size, 95% confidence interval) 
 The `microbenchmark` package is used to provide an estimate of the R function's processing time:
 
 ```{r, eval = FALSE}
-if (requireNamespace("microbenchmark", quietly = TRUE)) {
-  microbenchmark::microbenchmark(sppt(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp, nsamples=200, percpoints=85, conf_level=95), times = 50L, unit = "s")
-}
+# use `install.packages("microbenchmark")` if not already installed
+
+microbenchmark::microbenchmark(sppt(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp, nsamples=200, percpoints=85, conf_level=95), times = 50L, unit = "s")
 ```
 
 The R function takes between **2 and 3 seconds**, a massive speed increase compared to the Java application.

@@ -24,11 +24,8 @@ The paper 'Wheeler, A., Steenbeek, W., & Andresen, M.A. (2018). Testing for Simi
 
 As a simple example of the consequences of these limitations, consider the toy data used in other vignettes (for illustrative purposes we first remove points that are outside the areal units):
 
-```{r, echo = FALSE, message = FALSE}
-library(sppt)
-```
-
-```{r, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"}
+```{r, eval = TRUE, warning = FALSE, message = FALSE, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"}
+library("sppt")
 plot(areas.sp)
 points1 <- points1.sp[areas.sp, ]
 points2 <- points2.sp[areas.sp, ]
@@ -65,16 +62,16 @@ Although the order of variables are switched, it's easy to see all variables up 
 
 Realizing that SPPT is a procedure that aims to test the difference in proportions, Wheeler et al. (2018) propose to use a proportion difference test per areal unit. "While this direct test in the differences in proportions can be constructed in several ways (Agresti, 2003), [Wheeler et al. 2018] use a simple Chi-Square approach with Yate’s [sic] N-1 continuity correction. Other potential ways would be to estimate Fisher’s exact test (Fisher, 1925), estimate bootstrap differences in proportions for both sets, or a shrunk estimate of the differences in proportions (Agresti & Caffo, 2000). We use the continuity corrected Chi-Square based on the recommendations of Campbell (2007), showing the continuity corrected Chi-Square has more power than Fisher’s Exact test, and tends to work well even when cells have an expected number of observations as few as one."
 
-In fact, the package `sppt` >= 0.1.5 has two new functions:
+In fact, the package `sppt` >= 0.1.5 has **two** new functions:
 
 - `sppt_boot()`, that calculate differences in proportions using a bootstrap resampling procedure for both point datasets.
 - `sppt_diff()`, that implements the direct tests using Yates's continuity correction as well as Fisher's exact test. For both, a multiple comparisons correction is possible based on (e.g.) the false discovery rate.
 
 ### sppt_boot()
 
-`sppt_boot()` diffes from the original `sppt()` in that it does a resampling procedure on both Base and Test data. This function does NOT simply calculate a confidence interval around Base (like for Test in the `sppt()` function) and then inspects the overlap of the two confidence intervals. Instead, it takes a random sample from Base and Test for each areal unit, calculates the proportion of samples Base and Test points in each areal unit, and then the difference between the two percentages is calculated immediately (and this is done nsamples times for all areal units). If the 95% distribution of the differences between (resampled) Base and Test percentages excludes 0, they are deemed statistically different from each other.
+`sppt_boot()` diffes from the original `sppt()` in that it does a resampling procedure on both Base and Test data. This function takes a random sample from Base and Test for each areal unit, calculates the proportion of samples Base and Test points in each areal unit, and then the difference between the two percentages is calculated immediately (and this is done nsamples times for all areal units). If the 95% distribution of the differences between (resampled) Base and Test percentages excludes 0, they are deemed statistically significantly different from each other.
 
-The standard settings of percpoints = 100 and replacement = TRUE make this a real bootstrap procedure: (a) for each sampling loop (nsamples of times) as many points are sampled as present in the data (so no longer a 85% selection!); (b) points are sampled WITH replacement. Using this bootstrapping method the researcher no longer needs to make a choice of (85%) `percpoints`. If one does want to mimic the behavior of standard sppt() but with the added improvement that the choice of Base and Test data does not affect results, set `percpoints` to 85 and `replacement` to FALSE.
+The standard settings of `percpoints = 100` and `replacement = TRUE` make this a real bootstrap procedure: (a) for each sampling loop (nsamples of times) as many points are sampled as present in the data (so no longer a 85% selection!); (b) points are sampled WITH replacement. Using this bootstrapping method the researcher no longer needs to make a choice of (85%) `percpoints`. If one does want to mimic the behavior of standard `sppt()` but with the added improvement that the choice of Base and Test data does not affect results, set `percpoints` to `85` and `replacement` to `FALSE`.
 
 The bootstrapping procedure does NOT solve the issue of having 0 points in an areal unit. As points are not moved around in space in each resample, areal units without any points will always have 0 points in every sample. The next function, `sppt_diff()`, does not suffer from this shortcoming.
 
@@ -105,7 +102,7 @@ points(burglary2003, col="blue", pch=16, cex=.3)
 points(burglary2016, col="red", pch=16, cex=.3)
 ```
 
-Using the default values for sppt(), sppt_boot(), and Chi-Square with Yates's correction without p-value adjustment for multiple comparisons:
+Using the default values for `sppt()`, `sppt_boot()`, and `sppt_diff` with Chi-Square with Yates's correction without p-value adjustment for multiple comparisons:
 
 ```{r}
 set.seed(547347)
@@ -133,9 +130,9 @@ It is difficult to interpret the differences reported above because the points d
 
 ```{r}
 # use `install.packages("maptools")` if not already installed
-library(maptools, quietly = TRUE)
+library("maptools", quietly = TRUE)
 # use `install.packages("spatstat")` if not already installed
-library(spatstat, quietly = TRUE)
+library("spatstat", quietly = TRUE)
 
 # simulate point patterns
 das.owin <- as.owin(das)
@@ -156,14 +153,18 @@ proj4string(pts2) <- proj4string(das)
 The resulting point patterns are both concentrated mostly in the western part of Vancouver.
 
 ```{r, fig.height = 6, fig.width = 6, fig.align = "center"}
+# use `install.packages("scales")` if not already installed
+
 plot(das)
-points(pts1, col=scales::alpha("blue", .4), pch=16, cex=.1)
-points(pts2, col=scales::alpha("red", .4), pch=16, cex=.1)
+points(pts1, col=scales::alpha("blue", .3), pch=16, cex=.1)
+points(pts2, col=scales::alpha("red", .3), pch=16, cex=.1)
 ```
 
 For the purposes of this test, we remove areal units that have fewer than 100 points in either Base or Test:
 
 ```{r}
+# use `install.packages("rgeos")` if not already installed
+
 # Select the areal units containing 100 or more points (of both Base and Test)
 das2 <- das[as.numeric(which(colSums(rgeos::gContains(das, pts1, byid = TRUE)) >= 100)), ]
 das2 <- das2[as.numeric(which(colSums(rgeos::gContains(das2, pts2, byid = TRUE)) >= 100)), ]
@@ -176,8 +177,8 @@ pts2.sp <- pts2[das2, ]
 ```{r, fig.height = 6, fig.width = 6, fig.align = "center"}
 # Plot
 plot(das2)
-points(pts1.sp, col=scales::alpha("blue", .4), pch=16, cex=.1)
-points(pts2.sp, col=scales::alpha("red", .4), pch=16, cex=.1)
+points(pts1.sp, col=scales::alpha("blue", .3), pch=16, cex=.1)
+points(pts2.sp, col=scales::alpha("red", .3), pch=16, cex=.1)
 ```
 
 Any difference between the two point patterns is due to random variation, and so we'd like to see the globalS values to be quite high, indicating stability. We use the default values for sppt(), sppt_boot(), and Chi-Square with Yates's correction without p-value adjustment for multiple comparisons:
