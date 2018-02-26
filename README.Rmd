@@ -112,7 +112,15 @@ You can view which vignettes are available using:
 browseVignettes("sppt")
 ```
 
-To save time and because they may require additional packages, `devtools::install_github()` will not build vignettes by default. If the command above returns that vignettes are not found, you need to take a few additional steps.
+To save time and because they may require additional packages, `devtools::install_github()` will not build vignettes by default. If the command above returns that vignettes are not found, by far the easiest way to view the vignettes are these direct links, courtesy of the [GitHub HTML Preview service](http://htmlpreview.github.io/):
+
+1. [Introduction to Spatial Point Pattern Test (SPPT)](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/inst/doc/sppt.html)
+
+2. [Comparing R vs Java](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/inst/doc/sppt_comparison.html)
+
+3. [Proportion difference tests](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/inst/doc/sppt_diff.html)
+
+If instead you want to access the vignettes from R itself, you need to take a few additional steps:
 
 1. Install the rmarkdown package with `install.packages("rmarkdown")`
 
@@ -133,15 +141,6 @@ vignette("sppt", package = "sppt")
 vignette("sppt_comparison", package = "sppt")
 vignette("sppt_diff", package = "sppt")
 ```
-
-If the above still doesn't work, then a quick-fix is to just view the vignettes online using the [GitHub HTML Preview service](http://htmlpreview.github.io/):
-
-1. [sppt](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/inst/doc/sppt.html)
-
-2. [sppt_comparison](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/inst/doc/sppt_comparison.html)
-
-3. [sppt_diff](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/inst/doc/sppt_diff.html)
-
 
 ## License
 
