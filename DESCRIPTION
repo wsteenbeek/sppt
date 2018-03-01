@@ -1,7 +1,7 @@
 Package: sppt
 Type: Package
 Title: Spatial Point Pattern Test
-Version: 0.1.5
+Version: 0.1.6
 Authors@R: c(
     person("Wouter", "Steenbeek", role = c("aut", "cre"), email = "wsteenbeek@nscr.nl"),
     person("Christophe", "Vandeviver", role = c("aut"), email = "christophe.vandeviver@ugent.be"),
@@ -14,8 +14,8 @@ Author: Wouter Steenbeek [aut, cre],
   Nicolas Malleson [aut],
   Andrew Wheeler [aut]
 Maintainer: Wouter Steenbeek <wsteenbeek@nscr.nl>
-Description: This is a point pattern test that measures the degree of 
-    similarity at the local level between two spatial point patterns 
+Description: This package implements point pattern tests that measures the 
+    degree of similarity at the local level between two spatial point patterns 
     and is an area-based test.
     This spatial point pattern test is not for the purpose of testing 
     point patterns with the null hypotheses of random, uniform, or 
@@ -24,6 +24,7 @@ Description: This is a point pattern test that measures the degree of
     is that it can be performed for a number of different area boundaries 
     using the same original point datasets.
 Depends: 
+    exact2x2 (>= 1.6.2),
     R (>= 3.1.0),
     sp (>= 1.2-3)
 Imports: stats

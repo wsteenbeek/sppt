@@ -1,3 +1,17 @@
+# sppt 0.1.6
+
+* Adjusted function `sppt_diff()` to use `exact2x2::exact2x2()` instead
+  of `stats::fisher.test` as the former matches the different two-sided 
+  conditional exact tests for 2x2 tables with the appropriate confidence 
+  intervals. See https://cran.r-project.org/package=exact2x2 for details.
+
+* Added information on the `exact2x2::exact2x2()` to vignette
+  'Proportion difference tests'.
+
+* README updated
+
+* Moved helper functions such as `summary.sppt()` to separate R file.
+
 # sppt 0.1.5
 
 ## New features

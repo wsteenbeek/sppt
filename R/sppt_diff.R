@@ -1,19 +1,27 @@
 #' @import sp
 NULL
 
+#' @import exact2x2
+NULL
+
 #' Performs a Spatial Point Pattern Test (SPPT) following Wheeler et al. (2018)
 #'
 #' As opposed to the traditional SPPT, this test calculates the difference in
 #' the proportions using either a Chi-square proportions test or using Fisher's
 #' exact test, the p-values are then adjusted for multiple comparisons. See
 #' https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3111822 for a description
-#' and example.
+#' and example. \cr
+#' If test = 'Fisher', Fisher's exact test is used but with adjusted confidence
+#' intervals (method = 'minlike'). See the R package exact2x2 for details
+#' (https://cran.r-project.org/package=exact2x2)
 #'
 #' @param p1.sp           the first points spatialobject, order does not matter
 #' @param p2.sp           the second points spatialobject, order does not matter
 #' @param uoa.sp          the units of analysis spatial object
 #' @param conf_level      confidence interval, default = 95
-#' @param test            test to conduct, currently either Yates or Fisher, default Yates
+#' @param test            test to conduct, currently either 'Yates' or 'Fisher', default Yates
+#' @param tsmethod        if test equals 'Fisher', then exact2x2:exact2x2() is used, with default 'minlike'.
+#'                        With Yates's test, method is ignored.
 #' @param adj             method to adjust p-values (as per p.adjust), default "BY"
 #' @return Returns a spatial polygons data frame object that has fields related to the test
 #'         calculated. When test equals \code{Fisher}, the lower and upper confidence intervals are
@@ -42,7 +50,7 @@ NULL
 #' summary.sppt(myoutput)
 #'
 #' # The sppt_diff() outcomes without correction for multiple comparisons
-#' # are very close to sppt_boot() outcomes:
+#' # are close to sppt_boot() outcomes:
 #' set.seed(9866)
 #' myoutput1 <- sppt_diff(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp, test = "Fisher", adj = "none")
 #' summary.sppt(myoutput1)
@@ -52,7 +60,7 @@ NULL
 #' summary.sppt(myoutput2)
 #'
 #' @export
-sppt_diff <- function(p1.sp, p2.sp, uoa.sp, conf_level = 95, test = "Yates", adj = "BY"){
+sppt_diff <- function(p1.sp, p2.sp, uoa.sp, conf_level = 95, test = "Yates", tsmethod = "minlike", adj = "BY"){
 
   #################################
   # Read-in Units of Analysis
@@ -138,7 +146,7 @@ sppt_diff <- function(p1.sp, p2.sp, uoa.sp, conf_level = 95, test = "Yates", adj
     for (i in outcome$uoa_id){
   	  ro <- outcome[outcome$uoa_id == i,]
   	  da <- matrix(c(ro$nevents.b, ro$nevents.t, ro$tot.b - ro$nevents.b, ro$tot.t - ro$nevents.t), ncol=2)
-  	  res <- fisher.test(da, conf.level = conf_level/100)
+  	  res <- exact2x2::exact2x2(da, conf.level = conf_level/100, tsmethod = tsmethod)
   	  outcome[outcome$uoa_id == i, c("p.value")] <- res$p.value
 
   	  #These confidence intervals are for the odds ratio - not for the difference in percentages

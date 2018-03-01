@@ -77,9 +77,11 @@ The bootstrapping procedure does NOT solve the issue of having 0 points in an ar
 
 ### sppt_diff()
 
-As opposed to the traditional SPPT, this test calculates the difference in the proportions using either a Chi-square proportions test or Fisher's exact test. If required, the p-values are then adjusted for multiple comparisons.
+As opposed to the traditional SPPT, this test calculates the difference in the proportions using either a Chi-square proportions test or Fisher's exact test. By default, the p-values are adjusted for multiple comparisons using the false discovery rate following Benjamini & Yekutieli (2001).
 
 This function addresses all limitations noted by Wheeler et al. (2018): (1) the choice of what is the Base and what is the Test points set does not affect results; (2) the confidence invervals based on the exact binomial interval are small but non-zero (e.g. a 95% exact binomial confidence interval given an observed proportion of 0/100 is 0% to 3%, see Agresti 2002); (3) the size of the proportion difference is reported, allowing the researcher to focus on substantive differences and not just (perhaps trivial) statistical significance.
+
+Note that from package version 0.1.6 and above, if test = 'Fisher', Fisher's exact test is used but with adjusted p-values / confidence intervals (when method = 'minlike', which is the default), using `exact2x2::exact2x2()`. For details, see https://cran.r-project.org/package=exact2x2.
 
 
 ## The new functions in action: Vancouver data
@@ -186,7 +188,7 @@ points(pts1.sp, col=scales::alpha("blue", .3), pch=16, cex=.1)
 points(pts2.sp, col=scales::alpha("red", .3), pch=16, cex=.1)
 ```
 
-Any difference between the two point patterns is due to random variation, and so we'd like to see the globalS values to be quite high, indicating stability. We use the default values for sppt(), sppt_boot(), and Chi-Square with Yates's correction without p-value adjustment for multiple comparisons:
+Any difference between the two point patterns is due to random variation, and so we'd like to see the globalS values to be quite high, indicating stability. We use the default values for sppt(), sppt_boot(), and Chi-Square with Yates's correction with and without p-value adjustment for multiple comparisons, as well as Fisher's exact test with and without p-value adjustment for multiple comparisons:
 
 ```{r}
 set.seed(547347)
@@ -194,7 +196,13 @@ myoutput_sppt <- sppt(pts1.sp, pts2.sp, das2)
 set.seed(547347)
 myoutput_boot <- sppt_boot(pts1.sp, pts2.sp, das2)
 set.seed(547347)
-myoutput_diff <- sppt_diff(pts1.sp, pts2.sp, das2, adj="none")
+myoutput_yates <- sppt_diff(pts1.sp, pts2.sp, das2, adj = "none")
+set.seed(547347)
+myoutput_yates_adj <- sppt_diff(pts1.sp, pts2.sp, das2)
+set.seed(547347)
+myoutput_fisher <- sppt_diff(pts1.sp, pts2.sp, das2, test = "Fisher", adj = "none")
+set.seed(547347)
+myoutput_fisher_adj <- sppt_diff(pts1.sp, pts2.sp, das2, test = "Fisher")
 ```
 
 The global S-values are:
@@ -202,12 +210,17 @@ The global S-values are:
 ```{r}
 mean(myoutput_sppt$globalS)
 mean(myoutput_boot$globalS)
-mean(myoutput_diff$globalS)
+mean(myoutput_yates$globalS)
+mean(myoutput_yates_adj$globalS)
+mean(myoutput_fisher$globalS)
+mean(myoutput_fisher_adj$globalS)
 ```
 
 Some observations:
 
 - The differences between `sppt()` and the two new functions are substantial. By only resampling the Test points set, `sppt()` is much more likely to report the proportion of points as dissimilar. We conclude that outcomes of the original SPPT may have grossly overestimated the dissimilarity between point patterns.
+
+- Because with a large number of tests the probability of finding a false positive (i.e. an area being flagged as having a dissimilar proportion of points whereas they are actually similar) is increased by chance aone, by default `sppt_diff()` adjusts for multiple comparisons. Because in that case fewer areal units may get -1 or +1 local S values, the (default) correction for multiple comparisons further increases the global S value.
 
 - By not having 'empty' areal units and having at least 100 points per unit, the `sppt_boot()` and `sppt_diff()` are quite similar. However, because of the advantages of `sppt_diff()` when the number of points per areal unit is small or zero, our advice is to use this function in the future.
 
@@ -217,6 +230,8 @@ Some observations:
 Agresti, A. (2003). Dealing with discreteness: Making ‘exact’ confidence intervals for proportions, differences of proportions, and odds ratios more exact. *Statistical Methods in Medical Research*, 12, 3-21.
 
 Agresti, A., & Caffo, B. (2000). Simple and effective confidence intervals for proportions and differences of proportions result from adding two successes and two failures. *The American Statistician*, 54, 280-288.
+
+Benjamini, Y., and Yekutieli, D. (2001). The control of the false discovery rate in multiple testing under dependency. *Annals of Statistics* 29: 1165–1188.
 
 Campbell, I. (2007). Chi-squared and Fisher-Irwin tests of two-by-two tables with small sample recommendations. *Statistics in Medicine*, 26, 3661-3675.
 

@@ -5,7 +5,7 @@
 \title{Performs a Spatial Point Pattern Test (SPPT) following Wheeler et al. (2018)}
 \usage{
 sppt_diff(p1.sp, p2.sp, uoa.sp, conf_level = 95, test = "Yates",
-  adj = "BY")
+  tsmethod = "minlike", adj = "BY")
 }
 \arguments{
 \item{p1.sp}{the first points spatialobject, order does not matter}
@@ -16,7 +16,10 @@ sppt_diff(p1.sp, p2.sp, uoa.sp, conf_level = 95, test = "Yates",
 
 \item{conf_level}{confidence interval, default = 95}
 
-\item{test}{test to conduct, currently either Yates or Fisher, default Yates}
+\item{test}{test to conduct, currently either 'Yates' or 'Fisher', default Yates}
+
+\item{tsmethod}{if test equals 'Fisher', then exact2x2:exact2x2() is used, with default 'minlike'.
+With Yates's test, method is ignored.}
 
 \item{adj}{method to adjust p-values (as per p.adjust), default "BY"}
 }
@@ -31,7 +34,10 @@ As opposed to the traditional SPPT, this test calculates the difference in
 the proportions using either a Chi-square proportions test or using Fisher's
 exact test, the p-values are then adjusted for multiple comparisons. See
 https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3111822 for a description
-and example.
+and example. \cr
+If test = 'Fisher', Fisher's exact test is used but with adjusted confidence
+intervals (method = 'minlike'). See the R package exact2x2 for details
+(https://cran.r-project.org/package=exact2x2)
 }
 \examples{
 # Plot areas, base points data, and test points data

@@ -2,21 +2,28 @@
 Overview
 --------
 
-sppt is an [R](https://www.r-project.org) package that implements Martin Andresen's Spatial Point Pattern Test. It has been published [here](http://jrc.sagepub.com/content/48/1/58) (and elsewhere). The test measures the degree of similarity at the local level between two spatial point patterns and is an area-based test.
+sppt is an [R](https://www.r-project.org) package that implements several Spatial Point Pattern Tests. This package started with Martin Andresen's original 'sppt' that is published [here](http://jrc.sagepub.com/content/48/1/58) and elsewhere.
 
-This spatial point pattern test is not for the purpose of testing point patterns with the null hypotheses of random, uniform, or clustered distributions, but may be used to compare a particular point pattern with these distributions. One advantage of the test is that it can be performed for a number of different area boundaries using the same original point datasets.
+The Spatial Point Pattern Tests in this package measure the degree of similarity at the local level between two spatial pointpatterns and are area-based tests.
 
-In February 2018 a new test was added to the package courtesy of Andrew Wheeler, as a result of the following publication:
+These tests are not for the purpose of testing point patterns with the null hypotheses of random, uniform, or clustered distributions, but may be used to compare a particular point pattern with these distributions. One advantage is that it can be performed for a number of different area boundaries using the same original point datasets.
+
+Version
+-------
+
+The first published version of package `sppt` was version 0.1.4. In February 2018 new functions were added to the package as a result of the following publication:
 
 > Wheeler, A., Steenbeek, W., & Andresen, M.A. (2018). Testing for Similarity in Area-Based Spatial Patterns: Alternative Methods to Andresen's Spatial Point Pattern Test. (SSRN: <https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3111822>)
 
-Therefore the most recent version of the package has changed from version 0.1.4 to version 0.1.5. For version 0.1.4, please cite package 'sppt' in publications as:
+Up to 0.1.4, please cite package `sppt` in publications as:
 
 > Steenbeek, W., Vandeviver, C. Andresen, M.A., Malleson, N. (2017). *sppt: Spatial Point Pattern Test*. R package version 0.1.4. URL: <https://github.com/wsteenbeek/sppt>
 
-For version 0.1.5, the updated reference is:
+For version 0.1.5 and above, the updated reference is (change version number accordingly):
 
-> Steenbeek, W., Vandeviver, C. Andresen, M.A., Malleson, N., Wheeler, A. (2018). *sppt: Spatial Point Pattern Test*. R package version 0.1.5. URL: <https://github.com/wsteenbeek/sppt>
+> Steenbeek, W., Vandeviver, C. Andresen, M.A., Malleson, N., Wheeler, A. (2018). *sppt: Spatial Point Pattern Test*. R package version 0.1.6. URL: <https://github.com/wsteenbeek/sppt>
+
+An archive of older versions of the package can be found here: <https://github.com/wsteenbeek/sppt-archive>.
 
 Installation
 ------------
@@ -106,7 +113,7 @@ You can view which vignettes are available using:
 browseVignettes("sppt")
 ```
 
-To save time and because they may require additional packages, `devtools::install_github()` will not build vignettes by default. If the command above returns that vignettes are not found, by far the easiest way to view the vignettes are these direct links, courtesy of the [GitHub HTML Preview service](http://htmlpreview.github.io/):
+To save time and because they may require additional packages, `devtools::install_github()` may not build vignettes by default. If the command above returns that vignettes are not found, by far the easiest way to view the vignettes are these direct links, courtesy of the [GitHub HTML Preview service](http://htmlpreview.github.io/):
 
 1.  [Introduction to Spatial Point Pattern Test (SPPT)](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/inst/doc/sppt.html)
 
