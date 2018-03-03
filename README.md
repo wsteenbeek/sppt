@@ -11,15 +11,7 @@ These tests are not for the purpose of testing point patterns with the null hypo
 Version
 -------
 
-The first published version of package `sppt` was version 0.1.4. In February 2018 new functions were added to the package as a result of the following publication:
-
-> Wheeler, A., Steenbeek, W., & Andresen, M.A. (2018). Testing for Similarity in Area-Based Spatial Patterns: Alternative Methods to Andresen's Spatial Point Pattern Test. (SSRN: <https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3111822>)
-
-Up to 0.1.4, please cite package `sppt` in publications as:
-
-> Steenbeek, W., Vandeviver, C. Andresen, M.A., Malleson, N. (2017). *sppt: Spatial Point Pattern Test*. R package version 0.1.4. URL: <https://github.com/wsteenbeek/sppt>
-
-For version 0.1.5 and above, the updated reference is (change version number accordingly):
+The first published version of package `sppt` was version 0.1.4. In February 2018 new functions were added to the package. The most recent version of the package is:
 
 > Steenbeek, W., Vandeviver, C. Andresen, M.A., Malleson, N., Wheeler, A. (2018). *sppt: Spatial Point Pattern Test*. R package version 0.1.6. URL: <https://github.com/wsteenbeek/sppt>
 
