@@ -62,7 +62,7 @@ myoutput <- sppt_diff(vancouver_points1.sp, vancouver_points2.sp, vancouver_area
 summary.sppt(myoutput)
 
 # The sppt_diff() outcomes without correction for multiple comparisons
-# are very close to sppt_boot() outcomes:
+# are close to sppt_boot() outcomes:
 set.seed(9866)
 myoutput1 <- sppt_diff(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp, test = "Fisher", adj = "none")
 summary.sppt(myoutput1)
