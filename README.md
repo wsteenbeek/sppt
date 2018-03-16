@@ -29,7 +29,7 @@ install.packages("devtools")
 Then install sppt using the `install_github` function in the [devtools](https://CRAN.R-project.org/package=devtools) package.
 
 ``` r
-devtools::install_github("wsteenbeek/sppt")
+devtools::install_github("wsteenbeek/sppt", force = TRUE)
 ```
 
 Example
