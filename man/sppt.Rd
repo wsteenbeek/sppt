@@ -39,8 +39,8 @@ and is an area-based test.
 }
 \details{
 In its default settings, the function is the original Andresen's sppt, so
-only Test data is randomly resampled and a (by default 85%) subsampling
-approach is used.
+only Test data is randomly resampled (without replacement, by default
+using 85% of the Test points).
 
 By changing 'bootstrap' to TRUE, the 'percpoints' argument is ignored
 and the Test points are a bootstrapped sample: within each simualed dataset,

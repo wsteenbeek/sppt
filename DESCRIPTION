@@ -28,6 +28,7 @@ Depends:
     sp (>= 1.2-3)
 Imports: 
     dplyr (>= 0.7.3),
+    methods,
     stats
 Suggests:
     knitr,
