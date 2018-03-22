@@ -2,10 +2,10 @@
 % Please edit documentation in R/sppt.R
 \name{sppt}
 \alias{sppt}
-\title{Performs the Spatial Point Pattern Test (SPPT)}
+\title{Performs Andresen's Spatial Point Pattern Test}
 \usage{
 sppt(base_points.sp, test_points.sp, uoa.sp, outputlist = FALSE,
-  nsamples = 200, percpoints = 85, conf_level = 95)
+  nsamples = 200, percpoints = 85, conf_level = 95, bootstrap = FALSE)
 }
 \arguments{
 \item{base_points.sp}{the base points spatialobject}
@@ -21,6 +21,8 @@ sppt(base_points.sp, test_points.sp, uoa.sp, outputlist = FALSE,
 \item{percpoints}{percentage of points used in simulations, default = 85}
 
 \item{conf_level}{confidence interval, default = 95}
+
+\item{bootstrap}{logical, default is FALSE}
 }
 \value{
 When \code{outputlist} is \code{FALSE} (the default), returns the
@@ -34,6 +36,16 @@ When \code{outputlist} is \code{FALSE} (the default), returns the
 This is a point pattern test that measures the degree of
 similarity at the local level between two spatial point patterns
 and is an area-based test.
+}
+\details{
+In its default settings, the function is the original Andresen's sppt, so
+only Test data is randomly resampled and a (by default 85%) subsampling
+approach is used.
+
+By changing 'bootstrap' to TRUE, the 'percpoints' argument is ignored
+and the Test points are a bootstrapped sample: within each simualed dataset,
+as many points as the test set itself are sampled, but with replacement
+within each sample.
 }
 \examples{
 # Plot areas, base points data, and test points data
@@ -56,12 +68,17 @@ myoutput@data
 # now with a list being outputted, the 2nd element has all simulation outcomes
 set.seed(76772)
 myoutput <- sppt(points1.sp, points2.sp, areas.sp, outputlist = TRUE)
-head(myoutput[[1]]@data) # similar as above
+head(myoutput[[1]]@data) # same as previous
 head(myoutput[[2]])
 
 # Vancouver data
 set.seed(9866)
 myoutput <- sppt(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp)
+summary.sppt(myoutput)
+
+# Vancouver data, using a bootstrap approach instead of Andresen's subsampling method
+set.seed(9866)
+myoutput <- sppt(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp, bootstrap = TRUE)
 summary.sppt(myoutput)
 
 }

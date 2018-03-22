@@ -13,7 +13,7 @@ Version
 
 The first published version of package `sppt` was version 0.1.4. In February 2018 new functions were added to the package. The most recent version of the package is:
 
-> Steenbeek, W., Vandeviver, C. Andresen, M.A., Malleson, N., Wheeler, A. (2018). *sppt: Spatial Point Pattern Test*. R package version 0.1.6. URL: <https://github.com/wsteenbeek/sppt>
+> Steenbeek, W., Vandeviver, C. Andresen, M.A., Malleson, N., Wheeler, A. (2018). *sppt: Spatial Point Pattern Test*. R package version 0.2.0. URL: <https://github.com/wsteenbeek/sppt>
 
 An archive of older versions of the package can be found here: <https://github.com/wsteenbeek/sppt-archive>.
 
@@ -107,7 +107,7 @@ browseVignettes("sppt")
 
 To save time and because they may require additional packages, `devtools::install_github()` may not build vignettes by default. If the command above returns that vignettes are not found, by far the easiest way to view the vignettes are these direct links, courtesy of the [GitHub HTML Preview service](http://htmlpreview.github.io/):
 
-1.  [Introduction to Spatial Point Pattern Test (SPPT)](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/inst/doc/sppt.html)
+1.  [Introduction to Spatial Point Pattern Test](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/inst/doc/sppt_intro.html)
 
 2.  [Comparing R vs Java](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/inst/doc/sppt_comparison.html)
 
@@ -130,7 +130,7 @@ browseVignettes("sppt")
 To directly read the vignettes rather than going through `browseVignettes("sppt")` you can use:
 
 ``` r
-vignette("sppt", package = "sppt")
+vignette("sppt_intro", package = "sppt")
 vignette("sppt_comparison", package = "sppt")
 vignette("sppt_diff", package = "sppt")
 ```

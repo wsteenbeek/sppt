@@ -1,36 +1,37 @@
-#' @import sp
+#' @importFrom sp over
+#' @importFrom dplyr group_by summarise
 NULL
 
-#' Performs a Spatial Point Pattern Test (SPPT) with resampling of
-#' both Base and Test datasets
+#' Performs a Spatial Point Pattern Test with resampling of both Base and Test
+#' datasets.
 #'
-#' This is a point pattern test that measures the degree of
-#' similarity at the local level between two spatial point patterns
-#' and is an area-based test. \cr
 #' This function is different from the original sppt() in that it
-#' does a resampling procedure on both Base and Test data, and then for each
-#' unit of analysis the difference between the two percentages
-#' is calculated immediately (and this is done nsamples times). If the
-#' 95% distribution of the differences between (resampled) Base and Test
-#' percentages excludes 0, they are deemed statistically different from each
-#' other. \cr
-#' With the standard settings of percpoints = 100 and replacement = TRUE,
+#' does a (bootstrapped) resampling procedure on both Base and Test data,
+#' instead of just on the Test data.
+#'
+#' After a (bootstrapped) resample, for each areal unit the difference between
+#' the two percentages is calculated immediately (and this is done nsamples
+#' times). If the 95% distribution of the differences between (resampled) Base
+#' and Test percentages excludes 0, they are deemed statistically different.
+#'
+#' With the default settings of bootstrap = TRUE,
 #' it's a real bootstrap procedure: (a) for each sampling loop (nsamples of
-#' times) as many points are sampled as present in the data (so no longer a 85%
-#' selection!); (b) points are sampled WITH replacement.\cr
+#' times) as many points are sampled as present in the data (so argument
+#' 'percpoints' is ignored, or more precisely, set to 100%!); (b) points are
+#' sampled WITH replacement.
+#'
 #' If one wants to mimic the behavior of standard sppt() but with the added
 #' improvement that the choice of Base and Test data does not affect results,
-#' set percpoints to 85 and replacement to FALSE.
+#' set percpoints to 85 and bootstrap = FALSE.
 #'
 #' @param base_points.sp  the base points spatialobject
 #' @param test_points.sp  the test points spatialobject
 #' @param uoa.sp          the units of analysis spatial object
-#' @param outputlist      should the output of the function be a list, including all simulation runs as a matrix? default = FALSE
 #' @param nsamples        number of samples in simulations, default = 200
-#' @param percpoints      percentage of points used in simulations, default = 100
+#' @param percpoints      percentage of points used in simulations if bootstrap = FALSE, default = 85
 #' @param conf_level      confidence interval, default = 95
-#' @param replacement     should sampling be done with replacement? default = TRUE
-#' @return Returns the \code{uoa.sp} spatialobject including SPPT outcomes.
+#' @param bootstrap       logical. should bootstrap sampling be done (i.e. with replacement?) default = TRUE
+#' @return Returns the \code{uoa.sp} spatialobject including sppt outcomes.
 #' @examples
 #' # Plot areas, base points data, and test points data
 #' plot(areas.sp)
@@ -41,11 +42,6 @@ NULL
 #' set.seed(76772)
 #' myoutput <- sppt_boot(base_points.sp = points1.sp, test_points.sp = points2.sp, uoa.sp = areas.sp)
 #' summary.sppt(myoutput)
-#' myoutput@data
-#'
-#' # is exactly the same as:
-#' set.seed(76772)
-#' myoutput <- sppt_boot(points1.sp, points2.sp, areas.sp, nsamples=200, percpoints=100, conf_level=95, replacement=TRUE)
 #' myoutput@data
 #'
 #' # Vancouver data
@@ -66,12 +62,12 @@ NULL
 #'
 #' # Mimic the original sppt procedure but with resampling of both Base and Test
 #' set.seed(9866)
-#' myoutput <- sppt_boot(base_points.sp = points1.sp, test_points.sp = points2.sp, uoa.sp = areas.sp, percpoints=85, replacement=FALSE)
+#' myoutput <- sppt_boot(points1.sp, points2.sp, areas.sp, bootstrap=FALSE)
 #' summary.sppt(myoutput)
 #' myoutput@data
 #'
 #' @export
-sppt_boot <- function(base_points.sp, test_points.sp, uoa.sp, nsamples=200, percpoints=100, conf_level=95, replacement=TRUE){
+sppt_boot <- function(base_points.sp, test_points.sp, uoa.sp, nsamples=200, percpoints=85, conf_level=95, bootstrap=TRUE){
 
   #################################
   # Read-in Units of Analysis
@@ -92,46 +88,16 @@ sppt_boot <- function(base_points.sp, test_points.sp, uoa.sp, nsamples=200, perc
   basedata_over_results <- data.frame(point_id = 1:length(base_points), uoa_id = sp::over(base_points, uoa)$uoa_id)
 
   # number of points per unit (only for units that have any points)
-  npoints_per_uoa <- stats::aggregate(. ~ uoa_id, data = basedata_over_results, FUN=length)
+  npoints_per_uoa <- dplyr::group_by(basedata_over_results, uoa_id)
+  npoints_per_uoa <- dplyr::summarize(npoints_per_uoa, npoints = n())
+  npoints_per_uoa <- as.data.frame(npoints_per_uoa)
 
   # base data outcome data.frame
   baseoutcome <- data.frame(uoa_id = uoa$uoa_id)
-  baseoutcome$nevents <- npoints_per_uoa[match(baseoutcome$uoa_id, npoints_per_uoa$uoa_id), "point_id"]
+  baseoutcome$nevents <- npoints_per_uoa[match(baseoutcome$uoa_id, npoints_per_uoa$uoa_id), "npoints"]
   baseoutcome$nevents[is.na(baseoutcome$nevents)] <- 0
   # add percentages:
   baseoutcome$perc <- with(baseoutcome, nevents/sum(nevents)*100)
-
-  # how many points need to be sampled in each iteration?
-  samplesize <- round((percpoints/100) * length(base_points))
-
-  ## Function: for a sample of base points, calculate number of points in each unit of analysis
-  calculate.basepoints.per.unit <- function(nsample){
-
-    # select sample of base points
-    base_points_sample <- sample(basedata_over_results$point_id, size = samplesize, replace = replacement)
-
-    # create temporary basedata_over_results based on sample
-    basedata_over_results_sample <- data.frame(point_id = base_points_sample)
-    basedata_over_results_sample$uoa_id <- basedata_over_results[match(basedata_over_results_sample$point_id, basedata_over_results$point_id), "uoa_id"]
-
-    # number of points per unit (only for units that have any points)
-    npoints_per_uoa <- stats::aggregate(. ~ uoa_id, data = basedata_over_results_sample, FUN=length)
-
-    # base data outcome data.frame
-    sampleoutcome <- data.frame(uoa_id = uoa$uoa_id)
-    sampleoutcome$nevents <- npoints_per_uoa[match(sampleoutcome$uoa_id, npoints_per_uoa$uoa_id), "point_id"]
-    sampleoutcome$nevents[is.na(sampleoutcome$nevents)] <- 0
-    # add percentages:
-    sampleoutcome$perc <- with(sampleoutcome, nevents/sum(nevents)*100)
-
-    return(sampleoutcome)
-  }
-
-  # get all samples in one list
-  allsamples <- lapply(1:nsamples, calculate.basepoints.per.unit)
-
-  # extract the percentage objects only, per areal unit
-  allperc.base <- do.call(cbind, lapply(allsamples, function(x) x["perc"]))
 
   #################################
   # Test data set:
@@ -145,47 +111,67 @@ sppt_boot <- function(base_points.sp, test_points.sp, uoa.sp, nsamples=200, perc
   testdata_over_results <- data.frame(point_id = 1:length(test_points), uoa_id = sp::over(test_points, uoa)$uoa_id)
 
   # number of points per unit (only for units that have any points)
-  npoints_per_uoa <- stats::aggregate(. ~ uoa_id, data = testdata_over_results, FUN=length)
+  npoints_per_uoa <- dplyr::group_by(testdata_over_results, uoa_id)
+  npoints_per_uoa <- dplyr::summarize(npoints_per_uoa, npoints = n())
+  npoints_per_uoa <- as.data.frame(npoints_per_uoa)
 
-  # test data outcome data.frame
+  # base data outcome data.frame
   testoutcome <- data.frame(uoa_id = uoa$uoa_id)
-  testoutcome$nevents <- npoints_per_uoa[match(testoutcome$uoa_id, npoints_per_uoa$uoa_id), "point_id"]
+  testoutcome$nevents <- npoints_per_uoa[match(testoutcome$uoa_id, npoints_per_uoa$uoa_id), "npoints"]
   testoutcome$nevents[is.na(testoutcome$nevents)] <- 0
   # add percentages:
   testoutcome$perc <- with(testoutcome, nevents/sum(nevents)*100)
 
-  # how many points need to be sampled in each iteration?
-  samplesize <- round((percpoints/100) * length(test_points))
 
-  ## Function: for a sample of test points, calculate number of points in each unit of analysis
-  calculate.testpoints.per.unit <- function(nsample){
+  #################################
+  # Function: for a sample of points, calculate number of points in each unit of analysis
+  #################################
 
-    # select sample of test points
-    test_points_sample <- sample(testdata_over_results$point_id, size = samplesize, replace = replacement)
+  calculate.points.per.unit <- function(nsample, data_over_results){
 
-    # create temporary testdata_over_results based on sample
-    testdata_over_results_sample <- data.frame(point_id = test_points_sample)
-    testdata_over_results_sample$uoa_id <- testdata_over_results[match(testdata_over_results_sample$point_id, testdata_over_results$point_id), "uoa_id"]
+    # how many points need to be sampled in each iteration?
+    if(bootstrap){
+      samplesize <- nrow(data_over_results)
+    } else {
+      samplesize <- round((percpoints/100) * nrow(data_over_results))
+    }
+
+    # select sample of points
+    points_sample <- sample(data_over_results$point_id, size = samplesize, replace = bootstrap)
+
+    # create temporary basedata_over_results based on sample
+    data_over_results_sample <- data.frame(point_id = points_sample)
+    data_over_results_sample$uoa_id <- data_over_results[match(data_over_results_sample$point_id, data_over_results$point_id), "uoa_id"]
 
     # number of points per unit (only for units that have any points)
-    npoints_per_uoa <- stats::aggregate(. ~ uoa_id, data = testdata_over_results_sample, FUN=length)
+    npoints_per_uoa <- dplyr::group_by(data_over_results_sample, uoa_id)
+    npoints_per_uoa <- dplyr::summarize(npoints_per_uoa, npoints = n())
+    npoints_per_uoa <- as.data.frame(npoints_per_uoa)
 
-    # test data outcome data.frame
+    # sample outcome data.frame
     sampleoutcome <- data.frame(uoa_id = uoa$uoa_id)
-    sampleoutcome$nevents <- npoints_per_uoa[match(sampleoutcome$uoa_id, npoints_per_uoa$uoa_id), "point_id"]
+    sampleoutcome$nevents <- npoints_per_uoa[match(sampleoutcome$uoa_id, npoints_per_uoa$uoa_id), "npoints"]
     sampleoutcome$nevents[is.na(sampleoutcome$nevents)] <- 0
+
     # add percentages:
     sampleoutcome$perc <- with(sampleoutcome, nevents/sum(nevents)*100)
 
     return(sampleoutcome)
   }
 
-  # get all samples in one list
-  allsamples <- lapply(1:nsamples, calculate.testpoints.per.unit)
+  #################################
+  # Run function
+  #################################
 
+  # get all samples in one list
+  allsamples <- lapply(1:nsamples, function(x, y) calculate.points.per.unit(x, basedata_over_results))
+  # extract the percentage objects only, per areal unit
+  allperc.base <- do.call(cbind, lapply(allsamples, function(x) x["perc"]))
+
+  # get all samples in one list
+  allsamples <- lapply(1:nsamples, function(x, y) calculate.points.per.unit(x, testdata_over_results))
   # extract the percentage objects only, per areal unit
   allperc.test <- do.call(cbind, lapply(allsamples, function(x) x["perc"]))
-
 
   ### Compare bootstrapped base and test percentages per unit, per sample
   allperc_diff <- allperc.test - allperc.base

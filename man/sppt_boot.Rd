@@ -2,11 +2,11 @@
 % Please edit documentation in R/sppt_boot.R
 \name{sppt_boot}
 \alias{sppt_boot}
-\title{Performs a Spatial Point Pattern Test (SPPT) with resampling of
-both Base and Test datasets}
+\title{Performs a Spatial Point Pattern Test with resampling of both Base and Test
+datasets.}
 \usage{
 sppt_boot(base_points.sp, test_points.sp, uoa.sp, nsamples = 200,
-  percpoints = 100, conf_level = 95, replacement = TRUE)
+  percpoints = 85, conf_level = 95, bootstrap = TRUE)
 }
 \arguments{
 \item{base_points.sp}{the base points spatialobject}
@@ -17,35 +17,35 @@ sppt_boot(base_points.sp, test_points.sp, uoa.sp, nsamples = 200,
 
 \item{nsamples}{number of samples in simulations, default = 200}
 
-\item{percpoints}{percentage of points used in simulations, default = 100}
+\item{percpoints}{percentage of points used in simulations if bootstrap = FALSE, default = 85}
 
 \item{conf_level}{confidence interval, default = 95}
 
-\item{replacement}{should sampling be done with replacement? default = TRUE}
-
-\item{outputlist}{should the output of the function be a list, including all simulation runs as a matrix? default = FALSE}
+\item{bootstrap}{logical. should bootstrap sampling be done (i.e. with replacement?) default = TRUE}
 }
 \value{
-Returns the \code{uoa.sp} spatialobject including SPPT outcomes.
+Returns the \code{uoa.sp} spatialobject including sppt outcomes.
 }
 \description{
-This is a point pattern test that measures the degree of
-similarity at the local level between two spatial point patterns
-and is an area-based test. \cr
 This function is different from the original sppt() in that it
-does a resampling procedure on both Base and Test data, and then for each
-unit of analysis the difference between the two percentages
-is calculated immediately (and this is done nsamples times). If the
-95% distribution of the differences between (resampled) Base and Test
-percentages excludes 0, they are deemed statistically different from each
-other. \cr
-With the standard settings of percpoints = 100 and replacement = TRUE,
+does a (bootstrapped) resampling procedure on both Base and Test data,
+instead of just on the Test data.
+}
+\details{
+After a (bootstrapped) resample, for each areal unit the difference between
+the two percentages is calculated immediately (and this is done nsamples
+times). If the 95% distribution of the differences between (resampled) Base
+and Test percentages excludes 0, they are deemed statistically different.
+
+With the default settings of bootstrap = TRUE,
 it's a real bootstrap procedure: (a) for each sampling loop (nsamples of
-times) as many points are sampled as present in the data (so no longer a 85%
-selection!); (b) points are sampled WITH replacement.\cr
+times) as many points are sampled as present in the data (so argument
+'percpoints' is ignored, or more precisely, set to 100%!); (b) points are
+sampled WITH replacement.
+
 If one wants to mimic the behavior of standard sppt() but with the added
 improvement that the choice of Base and Test data does not affect results,
-set percpoints to 85 and replacement to FALSE.
+set percpoints to 85 and bootstrap = FALSE.
 }
 \examples{
 # Plot areas, base points data, and test points data
@@ -57,11 +57,6 @@ text(coordinates(points2.sp), label = points2.sp$ID, col="red")
 set.seed(76772)
 myoutput <- sppt_boot(base_points.sp = points1.sp, test_points.sp = points2.sp, uoa.sp = areas.sp)
 summary.sppt(myoutput)
-myoutput@data
-
-# is exactly the same as:
-set.seed(76772)
-myoutput <- sppt_boot(points1.sp, points2.sp, areas.sp, nsamples=200, percpoints=100, conf_level=95, replacement=TRUE)
 myoutput@data
 
 # Vancouver data
@@ -82,7 +77,7 @@ reps.output \%in\% reps.output2
 
 # Mimic the original sppt procedure but with resampling of both Base and Test
 set.seed(9866)
-myoutput <- sppt_boot(base_points.sp = points1.sp, test_points.sp = points2.sp, uoa.sp = areas.sp, percpoints=85, replacement=FALSE)
+myoutput <- sppt_boot(points1.sp, points2.sp, areas.sp, bootstrap=FALSE)
 summary.sppt(myoutput)
 myoutput@data
 

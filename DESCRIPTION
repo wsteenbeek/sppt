@@ -1,7 +1,7 @@
 Package: sppt
 Type: Package
 Title: Spatial Point Pattern Test
-Version: 0.1.6
+Version: 0.2.0
 Authors@R: c(
     person("Wouter", "Steenbeek", role = c("aut", "cre"), email = "wsteenbeek@nscr.nl"),
     person("Christophe", "Vandeviver", role = c("aut"), email = "christophe.vandeviver@ugent.be"),
@@ -24,10 +24,11 @@ Description: This package implements point pattern tests that measures the
     is that it can be performed for a number of different area boundaries 
     using the same original point datasets.
 Depends: 
-    exact2x2 (>= 1.5.2),
     R (>= 3.1.0),
     sp (>= 1.2-3)
-Imports: stats
+Imports: 
+    dplyr (>= 0.7.3),
+    stats
 Suggests:
     knitr,
     maptools,

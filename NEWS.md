@@ -1,3 +1,45 @@
+# sppt 0.2.0
+
+## Important changes
+
+* Function `sppt_diff()` changed to have "Chi2_Nmin1" as the default test. This
+  means that a function call to `sppt_diff()` will give different results than
+  the same call up to version 0.2.0, as the latter had "Yates" as default.
+
+* Function `sppt_diff()` updated to have a variety of tests.
+
+* Function `sppt_diff()` now uses the p-values throughout (instead of confidence 
+  intervals) to decide on statistical significance. This makes it easy to adjust
+  the p-values (and decisions to reject the null) for multiple comparisons,
+  the default setting.
+
+* Function `sppt_diff()` no longer uses exact2x2 package as fisher.test reports
+  the same p-value (only the confidence intervals were different, which are no
+  longer used.)
+  
+* Arguments of `sppt_boot()` changed. Instead of 'replacement' now 'bootstrap'
+  is used. 'percpoints' default is set to 85, but is ignored if bootstrap = TRUE.
+  This means that in the default behavior, a bootstrap sample (i.e. 100% of
+  points are samples with replacement) is drawn for both Base and Test. If
+  bootstrap = FALSE, the percpoints (default 85) is used in a subsampling method
+  for both Base and Test (i.e. as in Andresen's original test, but also for Base).
+
+* Added argument 'bootstrap' to `sppt()`. In the default behavior, bootstrap =
+  FALSE and `sppt()` will be Andresen's original test (i.e. subsampling Test
+  only with percpoints sampling without replacement). When bootstrap = TRUE,
+  'percpoints' is ignored and a bootstrapped sample (i.e. 100% of Test points
+  sampled WITH replacement) is used for Test.
+
+## Misc
+
+* Vignette sppt renamed into sppt_intro
+
+* Vignette sppt_diff updated with new information.
+
+* LICENSE file added
+
+* README updated
+
 # sppt 0.1.6
 
 * Adjusted function `sppt_diff()` to use `exact2x2::exact2x2()` instead
@@ -38,4 +80,4 @@
 
 # sppt 0.1.4
 
-First published version of the `sppt` package. Includes function `sppt()`.
+* First published version of the `sppt` package. Includes function `sppt()`.

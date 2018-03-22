@@ -1,5 +1,4 @@
 ## ---- eval = TRUE, warning = FALSE, message = FALSE, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"----
-library("sppt")
 plot(areas.sp)
 points(points1.sp, col="blue", pch = 19)
 points(points2.sp, col="red", pch = 15)

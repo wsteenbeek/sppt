@@ -1,10 +1,10 @@
 ---
-title: "Introduction to Spatial Point Pattern Test (SPPT)"
+title: "Introduction to Spatial Point Pattern Test"
 author: "Martin Andresen & Wouter Steenbeek"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Introduction to Spatial Point Pattern Test (SPPT)}
+  %\VignetteIndexEntry{Introduction to Spatial Point Pattern Test}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---

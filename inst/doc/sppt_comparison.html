@@ -12,7 +12,7 @@
 
 <meta name="author" content="Wouter Steenbeek" />
 
-<meta name="date" content="2018-03-07" />
+<meta name="date" content="2018-03-22" />
 
 <title>Comparing R vs Java</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Comparing R vs Java</h1>
 <h4 class="author"><em>Wouter Steenbeek</em></h4>
-<h4 class="date"><em>2018-03-07</em></h4>
+<h4 class="date"><em>2018-03-22</em></h4>
 
 
 
@@ -79,8 +79,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div id="toy-example-data" class="section level2">
 <h2>Toy example data</h2>
 <p>Spatial objects areas.sp, points1.sp, and points2.sp can be used for a quick comparison of the R and Java implementation.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;sppt&quot;</span>)
-<span class="kw">plot</span>(areas.sp)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(areas.sp)
 <span class="kw">points</span>(points1.sp, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)
 <span class="kw">points</span>(points2.sp, <span class="dt">col=</span><span class="st">&quot;red&quot;</span>, <span class="dt">pch =</span> <span class="dv">15</span>)
 <span class="kw">text</span>(<span class="kw">coordinates</span>(areas.sp), <span class="dt">label =</span> areas.sp<span class="op">$</span>ID, <span class="dt">font =</span> <span class="dv">2</span>)</code></pre></div>
@@ -258,7 +257,7 @@ Vancouver Test points
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="cf">if</span>(<span class="op">!</span><span class="kw">require</span>(microbenchmark)) <span class="kw">install.packages</span>(<span class="st">&quot;microbenchmark&quot;</span>, <span class="dt">repos =</span> <span class="st">&quot;https://cloud.r-project.org/&quot;</span>)
 
 microbenchmark<span class="op">::</span><span class="kw">microbenchmark</span>(<span class="kw">sppt</span>(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp, <span class="dt">nsamples=</span><span class="dv">200</span>, <span class="dt">percpoints=</span><span class="dv">85</span>, <span class="dt">conf_level=</span><span class="dv">95</span>), <span class="dt">times =</span> 50L, <span class="dt">unit =</span> <span class="st">&quot;s&quot;</span>)</code></pre></div>
-<p>The R function takes between <strong>2 and 3 seconds</strong>, a massive speed increase compared to the Java application.</p>
+<p>The R function takes about <strong>1.5 seconds</strong>, a massive speed increase compared to the Java application.</p>
 </div>
 <div id="preliminary-checks" class="section level3">
 <h3>Preliminary checks</h3>
