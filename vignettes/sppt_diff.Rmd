@@ -22,10 +22,13 @@ The paper 'Wheeler, A., Steenbeek, W., & Andresen, M.A. (2018). Testing for Simi
 
 ## Example
 
+```{r, eval = TRUE, warning = FALSE, message = FALSE}
+library("sppt")
+```
+
 As a simple example of the consequences of these limitations, consider the toy data used in other vignettes (for illustrative purposes we first remove points that are outside the areal units):
 
 ```{r, eval = TRUE, warning = FALSE, message = FALSE, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"}
-library("sppt")
 plot(areas.sp)
 points1 <- points1.sp[areas.sp, ]
 points2 <- points2.sp[areas.sp, ]

@@ -15,6 +15,10 @@ A description of the steps in the Spatial Point Pattern Test are described [here
 
 ## Toy example data 
 
+```{r, eval = TRUE, warning = FALSE, message = FALSE}
+library("sppt")
+```
+
 Spatial objects areas.sp, points1.sp, and points2.sp can be used for a quick comparison of the R and Java implementation.
 
 ```{r, eval = TRUE, warning = FALSE, message = FALSE, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"}

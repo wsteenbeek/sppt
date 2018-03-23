@@ -1,5 +1,7 @@
-## ---- eval = TRUE, warning = FALSE, message = FALSE, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"----
+## ---- eval = TRUE, warning = FALSE, message = FALSE----------------------
 library("sppt")
+
+## ---- eval = TRUE, warning = FALSE, message = FALSE, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"----
 plot(areas.sp)
 points1 <- points1.sp[areas.sp, ]
 points2 <- points2.sp[areas.sp, ]

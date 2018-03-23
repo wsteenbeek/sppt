@@ -1,3 +1,6 @@
+## ---- eval = TRUE, warning = FALSE, message = FALSE----------------------
+library("sppt")
+
 ## ---- eval = TRUE, warning = FALSE, message = FALSE, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"----
 plot(areas.sp)
 points(points1.sp, col="blue", pch = 19)

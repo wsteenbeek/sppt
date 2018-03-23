@@ -12,7 +12,7 @@
 
 <meta name="author" content="Wouter Steenbeek" />
 
-<meta name="date" content="2018-03-22" />
+<meta name="date" content="2018-03-23" />
 
 <title>Comparing R vs Java</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Comparing R vs Java</h1>
 <h4 class="author"><em>Wouter Steenbeek</em></h4>
-<h4 class="date"><em>2018-03-22</em></h4>
+<h4 class="date"><em>2018-03-23</em></h4>
 
 
 
@@ -78,6 +78,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p><a href="http://nickmalleson.co.uk">Nick Malleson</a> has programmed a <a href="https://github.com/nickmalleson/spatialtest">Java application</a> for the SPPT, including a graphical user interface. The <code>sppt</code> R function was programmed by <a href="http://www.woutersteenbeek.nl">Wouter Steenbeek</a> independently. This vignette compares the output of the R function and Java application, showing their differences.</p>
 <div id="toy-example-data" class="section level2">
 <h2>Toy example data</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;sppt&quot;</span>)</code></pre></div>
 <p>Spatial objects areas.sp, points1.sp, and points2.sp can be used for a quick comparison of the R and Java implementation.</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(areas.sp)
 <span class="kw">points</span>(points1.sp, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)

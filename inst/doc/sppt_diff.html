@@ -12,7 +12,7 @@
 
 <meta name="author" content="Wouter Steenbeek &amp; Andrew Wheeler" />
 
-<meta name="date" content="2018-03-22" />
+<meta name="date" content="2018-03-23" />
 
 <title>Proportion difference tests</title>
 
@@ -70,7 +70,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 <h1 class="title toc-ignore">Proportion difference tests</h1>
 <h4 class="author"><em>Wouter Steenbeek &amp; Andrew Wheeler</em></h4>
-<h4 class="date"><em>2018-03-22</em></h4>
+<h4 class="date"><em>2018-03-23</em></h4>
 
 
 
@@ -85,9 +85,9 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </div>
 <div id="example" class="section level2">
 <h2>Example</h2>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;sppt&quot;</span>)</code></pre></div>
 <p>As a simple example of the consequences of these limitations, consider the toy data used in other vignettes (for illustrative purposes we first remove points that are outside the areal units):</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">library</span>(<span class="st">&quot;sppt&quot;</span>)
-<span class="kw">plot</span>(areas.sp)
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">plot</span>(areas.sp)
 points1 &lt;-<span class="st"> </span>points1.sp[areas.sp, ]
 points2 &lt;-<span class="st"> </span>points2.sp[areas.sp, ]
 <span class="kw">points</span>(points1, <span class="dt">col=</span><span class="st">&quot;blue&quot;</span>, <span class="dt">pch =</span> <span class="dv">19</span>)
