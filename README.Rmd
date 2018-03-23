@@ -34,10 +34,9 @@ a number of different area boundaries using the same original point datasets.
 
 ## Version
 
-The first published version of package `sppt` was version 0.1.4. In February 2018 new
-functions were added to the package. The most recent version of the package is:
+The most recent version of the package is:
 
-> Steenbeek, W., Vandeviver, C. Andresen, M.A., Malleson, N., Wheeler, A. (2018). *sppt: Spatial Point Pattern Test*. R package version 0.2.0. URL: https://github.com/wsteenbeek/sppt
+> Steenbeek, W., Vandeviver, C. Andresen, M.A., Malleson, N., Wheeler, A. (2018). *sppt: Spatial Point Pattern Test*. R package version 0.2.1. URL: https://github.com/wsteenbeek/sppt
 
 An archive of older versions of the package can be found here: https://github.com/wsteenbeek/sppt-archive.
 
