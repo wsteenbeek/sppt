@@ -10,9 +10,9 @@ NULL
 #' See https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3111822 for a description
 #' and example.
 #'
-#' @param p1.sp           the first points spatialobject, order does not matter
-#' @param p2.sp           the second points spatialobject, order does not matter
-#' @param uoa.sp          the units of analysis spatial object
+#' @param p1.sp           the first points of type SpatialPoints*, order does not matter
+#' @param p2.sp           the second points of type SpatialPoints*, order does not matter
+#' @param uoa.sp          the units of analysis of type SpatialPolygons*
 #' @param conf_level      confidence interval, default = 95
 #' @param test            test to conduct, currently either 'Yates' or 'Fisher', default Yates
 #' @param tsmethod        test to conduct, choice of "Chi2_Nmin1", "Chi2",
@@ -57,19 +57,30 @@ sppt_diff <- function(p1.sp, p2.sp, uoa.sp, conf_level = 95, test = "Chi2_Nmin1"
   # Check Test
   if(!test %in% c("Chi2_Nmin1", "Chi2", "Yates", "Fisher")) stop( paste("Your test argument of", test,"is not valid.") )
 
+  # Check validity of points objects:
+  if (!is(p1.sp, "SpatialPoints")) stop( paste("Your first points data is not a SpatialPoints* object.") )
+  if (!is(p2.sp, "SpatialPoints")) stop( paste("Your second points data is not a SpatialPoints* object.") )
+
   #################################
   # Read-in Units of Analysis
   #################################
   uoa <- uoa.sp
 
-  uoa$uoa_id <- 1:length(uoa)
+  # check if it's already a SpatialPolygonsDataFrame. If not, coerce to one.
+  if (is(uoa, "SpatialPolygonsDataFrame")){
+    uoa$uoa_id <- 1:length(uoa)
+  } else if (is(uoa, "SpatialPolygons")){
+    uoa <- SpatialPolygonsDataFrame(uoa, data = data.frame(uoa_id = 1:length(uoa)), match.ID = FALSE)
+  } else {
+    stop( paste("Your units of analysis are not a SpatialPolygons* object.") )
+  }
 
   #################################
   # p1 data set:
   #################################
 
   # keep only points that fall within a spatial unit of analysis
-  p1 <- p1.sp[uoa.sp, ]
+  p1 <- p1.sp[uoa, ]
 
   # save the results of the over function in a dataframe for later reference
   basedata_over_results <- data.frame(point_id = 1:length(p1), uoa_id = sp::over(p1, uoa)$uoa_id)
@@ -93,7 +104,7 @@ sppt_diff <- function(p1.sp, p2.sp, uoa.sp, conf_level = 95, test = "Chi2_Nmin1"
   #################################
 
   # keep only points that fall within a spatial unit of analysis
-  p2 <- p2.sp[uoa.sp, ]
+  p2 <- p2.sp[uoa, ]
 
   # save the results of the over function in a dataframe for later reference
   testdata_over_results <- data.frame(point_id = 1:length(p2), uoa_id = sp::over(p2, uoa)$uoa_id)

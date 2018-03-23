@@ -8,11 +8,11 @@ sppt_diff(p1.sp, p2.sp, uoa.sp, conf_level = 95, test = "Chi2_Nmin1",
   adj = "BY")
 }
 \arguments{
-\item{p1.sp}{the first points spatialobject, order does not matter}
+\item{p1.sp}{the first points of type SpatialPoints*, order does not matter}
 
-\item{p2.sp}{the second points spatialobject, order does not matter}
+\item{p2.sp}{the second points of type SpatialPoints*, order does not matter}
 
-\item{uoa.sp}{the units of analysis spatial object}
+\item{uoa.sp}{the units of analysis of type SpatialPolygons*}
 
 \item{conf_level}{confidence interval, default = 95}
 

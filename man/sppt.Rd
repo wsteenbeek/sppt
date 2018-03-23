@@ -8,11 +8,11 @@ sppt(base_points.sp, test_points.sp, uoa.sp, outputlist = FALSE,
   nsamples = 200, percpoints = 85, conf_level = 95, bootstrap = FALSE)
 }
 \arguments{
-\item{base_points.sp}{the base points spatialobject}
+\item{base_points.sp}{the Base data of type SpatialPoints*}
 
-\item{test_points.sp}{the test points spatialobject}
+\item{test_points.sp}{the Test data of type SpatialPoints*}
 
-\item{uoa.sp}{the units of analysis spatial object}
+\item{uoa.sp}{the units of analysis of type SpatialPolygons*}
 
 \item{outputlist}{should the output of the function be a list, including all simulation runs as a matrix? default = FALSE}
 

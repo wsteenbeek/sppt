@@ -1,3 +1,10 @@
+# sppt 0.2.1
+
+* Added checks for SpatialPolygons and SpatialPoints objects. For the spatial
+  units of analysis, SpatialPolygons can now be used as they are automatically
+  coerced to SpatialPolygonsDataframe. If provided objects are not of type
+  SpatialPolygons or SpatialPoints, functions stop and give error message.
+
 # sppt 0.2.0
 
 ## Important changes

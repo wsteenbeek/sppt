@@ -9,11 +9,11 @@ sppt_boot(base_points.sp, test_points.sp, uoa.sp, nsamples = 200,
   percpoints = 85, conf_level = 95, bootstrap = TRUE)
 }
 \arguments{
-\item{base_points.sp}{the base points spatialobject}
+\item{base_points.sp}{the Base data of type SpatialPoints*}
 
-\item{test_points.sp}{the test points spatialobject}
+\item{test_points.sp}{the Test data of type SpatialPoints*}
 
-\item{uoa.sp}{the units of analysis spatial object}
+\item{uoa.sp}{the units of analysis of type SpatialPolygons*}
 
 \item{nsamples}{number of samples in simulations, default = 200}
 

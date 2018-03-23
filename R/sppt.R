@@ -17,9 +17,9 @@ NULL
 #' as many points as the test set itself are sampled, but with replacement
 #' within each sample.
 #'
-#' @param base_points.sp  the base points spatialobject
-#' @param test_points.sp  the test points spatialobject
-#' @param uoa.sp          the units of analysis spatial object
+#' @param base_points.sp  the Base data of type SpatialPoints*
+#' @param test_points.sp  the Test data of type SpatialPoints*
+#' @param uoa.sp          the units of analysis of type SpatialPolygons*
 #' @param outputlist      should the output of the function be a list, including all simulation runs as a matrix? default = FALSE
 #' @param nsamples        number of samples in simulations, default = 200
 #' @param percpoints      percentage of points used in simulations, default = 85
@@ -68,19 +68,30 @@ NULL
 #' @export
 sppt <- function(base_points.sp, test_points.sp, uoa.sp, outputlist = FALSE, nsamples = 200, percpoints = 85, conf_level = 95, bootstrap = FALSE){
 
+  # Check validity of points objects:
+  if (!is(base_points.sp, "SpatialPoints")) stop( paste("Your Base data is not a SpatialPoints* object.") )
+  if (!is(test_points.sp, "SpatialPoints")) stop( paste("Your Test data is not a SpatialPoints* object.") )
+
   #################################
   # Read-in Units of Analysis
   #################################
   uoa <- uoa.sp
 
-  uoa$uoa_id <- 1:length(uoa)
+  # check if it's already a SpatialPolygonsDataFrame. If not, coerce to one.
+  if (is(uoa, "SpatialPolygonsDataFrame")){
+    uoa$uoa_id <- 1:length(uoa)
+  } else if (is(uoa, "SpatialPolygons")){
+      uoa <- SpatialPolygonsDataFrame(uoa, data = data.frame(uoa_id = 1:length(uoa)), match.ID = FALSE)
+  } else {
+    stop( paste("Your units of analysis are not a SpatialPolygons* object.") )
+  }
 
   #################################
   # Base data set:
   #################################
 
   # keep only points that fall within a spatial unit of analysis
-  base_points <- base_points.sp[uoa.sp, ]
+  base_points <- base_points.sp[uoa, ]
 
   # count number of base_points per areal unit
   # save the results of the over function in a dataframe for later reference
@@ -103,7 +114,7 @@ sppt <- function(base_points.sp, test_points.sp, uoa.sp, outputlist = FALSE, nsa
   #################################
 
   # keep only points that fall within a spatial unit of analysis
-  test_points <- test_points.sp[uoa.sp, ]
+  test_points <- test_points.sp[uoa, ]
 
   # count number of test_points per areal unit
   # save the results of the over function in a dataframe for later reference
@@ -184,8 +195,7 @@ sppt <- function(base_points.sp, test_points.sp, uoa.sp, outputlist = FALSE, nsa
   # Create outcome shapefile
   #################################
 
-  outcome.sp <- uoa.sp
-  outcome.sp$uoa_id <- uoa$uoa_id
+  outcome.sp <- uoa
 
   outcome.sp$SIndex <- svalues$SIndex
   outcome.sp$NumBsePts <- baseoutcome$nevents
