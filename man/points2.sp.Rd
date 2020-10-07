@@ -4,13 +4,15 @@
 \name{points2.sp}
 \alias{points2.sp}
 \title{Test Points dataset: 10 points}
-\format{A SpatialPointsDataFrame with 10 rows and 4 variables:
+\format{
+A SpatialPointsDataFrame with 10 rows and 4 variables:
 \describe{
   \item{TYPE}{Type of transportation node}
   \item{ROUTENUM}{Associated Route number}
   \item{STATNUM}{Unimportant variable}
   \item{ID}{ID number of the spatial point}
-}}
+}
+}
 \source{
 \url{https://github.com/nickmalleson/spatialtest}
 }

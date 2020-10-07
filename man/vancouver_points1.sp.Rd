@@ -4,12 +4,14 @@
 \name{vancouver_points1.sp}
 \alias{vancouver_points1.sp}
 \title{Base Points dataset: 14585 crimes occuring in Vancouver}
-\format{A SpatialPointsDataFrame with 14585 rows and 32 variables:
+\format{
+A SpatialPointsDataFrame with 14585 rows and 32 variables:
 \describe{
   \item{OBJECTID}{ID number of the spatial point}
   \item{YEAR}{year of crime occurrence: 2012}
   ...
-}}
+}
+}
 \usage{
 vancouver_points1.sp
 }

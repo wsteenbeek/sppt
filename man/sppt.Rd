@@ -4,8 +4,16 @@
 \alias{sppt}
 \title{Performs Andresen's Spatial Point Pattern Test}
 \usage{
-sppt(base_points.sp, test_points.sp, uoa.sp, outputlist = FALSE,
-  nsamples = 200, percpoints = 85, conf_level = 95, bootstrap = FALSE)
+sppt(
+  base_points.sp,
+  test_points.sp,
+  uoa.sp,
+  outputlist = FALSE,
+  nsamples = 200,
+  percpoints = 85,
+  conf_level = 95,
+  bootstrap = FALSE
+)
 }
 \arguments{
 \item{base_points.sp}{the Base data of type SpatialPoints*}

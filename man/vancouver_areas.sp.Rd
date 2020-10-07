@@ -4,12 +4,14 @@
 \name{vancouver_areas.sp}
 \alias{vancouver_areas.sp}
 \title{Vanvouver data: 108 spatial units of analysis}
-\format{A SpatialPoylgonsDataFrame with 108 rows and 3 variables:
+\format{
+A SpatialPoylgonsDataFrame with 108 rows and 3 variables:
 \describe{
   \item{CTUID}{ID number of the area}
   \item{CMAUID}{Unimportant variable}
   \item{PRUID}{Unimportant variable}
-}}
+}
+}
 \usage{
 vancouver_areas.sp
 }

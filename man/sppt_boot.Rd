@@ -5,8 +5,15 @@
 \title{Performs a Spatial Point Pattern Test with resampling of both Base and Test
 datasets.}
 \usage{
-sppt_boot(base_points.sp, test_points.sp, uoa.sp, nsamples = 200,
-  percpoints = 85, conf_level = 95, bootstrap = TRUE)
+sppt_boot(
+  base_points.sp,
+  test_points.sp,
+  uoa.sp,
+  nsamples = 200,
+  percpoints = 85,
+  conf_level = 95,
+  bootstrap = TRUE
+)
 }
 \arguments{
 \item{base_points.sp}{the Base data of type SpatialPoints*}

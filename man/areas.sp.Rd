@@ -4,10 +4,12 @@
 \name{areas.sp}
 \alias{areas.sp}
 \title{Six spatial units of analysis}
-\format{A SpatialPoylgonsDataFrame with 6 rows and 1 variable:
+\format{
+A SpatialPoylgonsDataFrame with 6 rows and 1 variable:
 \describe{
   \item{ID}{ID number of the area}
-}}
+}
+}
 \source{
 \url{https://github.com/nickmalleson/spatialtest}
 }

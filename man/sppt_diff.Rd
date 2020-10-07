@@ -4,8 +4,14 @@
 \alias{sppt_diff}
 \title{Performs a Spatial Point Pattern Test following Wheeler et al. (2018)}
 \usage{
-sppt_diff(p1.sp, p2.sp, uoa.sp, conf_level = 95, test = "Chi2_Nmin1",
-  adj = "BY")
+sppt_diff(
+  p1.sp,
+  p2.sp,
+  uoa.sp,
+  conf_level = 95,
+  test = "Chi2_Nmin1",
+  adj = "BY"
+)
 }
 \arguments{
 \item{p1.sp}{the first points of type SpatialPoints*, order does not matter}
@@ -18,7 +24,7 @@ sppt_diff(p1.sp, p2.sp, uoa.sp, conf_level = 95, test = "Chi2_Nmin1",
 
 \item{test}{test to conduct, currently either 'Yates' or 'Fisher', default Yates}
 
-\item{adj}{method to adjust p-values (as per p.adjust), default "BY". To turn off, set to "none".}
+\item{adj}{method to adjust p-values (as per stats::p.adjust), default "BY". To turn off, set to "none".}
 
 \item{tsmethod}{test to conduct, choice of "Chi2_Nmin1", "Chi2",
 "Yates", or "Fisher", default = "Chi2_Nmin1"}

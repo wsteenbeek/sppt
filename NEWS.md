@@ -1,3 +1,7 @@
+# sppt 0.2.2
+
+* Minor updates to code to ensure compatibility with dplyr 1.0.0 and higher.
+
 # sppt 0.2.1
 
 * Added checks for SpatialPolygons and SpatialPoints objects. For the spatial

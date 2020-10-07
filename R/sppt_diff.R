@@ -17,7 +17,7 @@ NULL
 #' @param test            test to conduct, currently either 'Yates' or 'Fisher', default Yates
 #' @param tsmethod        test to conduct, choice of "Chi2_Nmin1", "Chi2",
 #'                        "Yates", or "Fisher", default = "Chi2_Nmin1"
-#' @param adj             method to adjust p-values (as per p.adjust), default "BY". To turn off, set to "none".
+#' @param adj             method to adjust p-values (as per stats::p.adjust), default "BY". To turn off, set to "none".
 #' @return Returns uoa.sp (a spatial polygons data frame) including sppt_diff outcomes.
 #' @examples
 #' # Plot areas, base points data, and test points data
@@ -87,7 +87,7 @@ sppt_diff <- function(p1.sp, p2.sp, uoa.sp, conf_level = 95, test = "Chi2_Nmin1"
 
   # number of points per unit (only for units that have any points)
   npoints_per_uoa <- dplyr::group_by(basedata_over_results, uoa_id)
-  npoints_per_uoa <- dplyr::summarize(npoints_per_uoa, npoints = n())
+  npoints_per_uoa <- dplyr::summarize(npoints_per_uoa, npoints = dplyr::n())
   npoints_per_uoa <- as.data.frame(npoints_per_uoa)
 
   # fill outcome data.frame
@@ -111,7 +111,7 @@ sppt_diff <- function(p1.sp, p2.sp, uoa.sp, conf_level = 95, test = "Chi2_Nmin1"
 
   # number of points per unit (only for units that have any points)
   npoints_per_uoa <- dplyr::group_by(testdata_over_results, uoa_id)
-  npoints_per_uoa <- dplyr::summarize(npoints_per_uoa, npoints = n())
+  npoints_per_uoa <- dplyr::summarize(npoints_per_uoa, npoints = dplyr::n())
   npoints_per_uoa <- as.data.frame(npoints_per_uoa)
 
   # base data outcome data.frame
@@ -134,14 +134,14 @@ sppt_diff <- function(p1.sp, p2.sp, uoa.sp, conf_level = 95, test = "Chi2_Nmin1"
     da <- matrix(c(ro$nevents.b, ro$nevents.t, ro$tot.b - ro$nevents.b, ro$tot.t - ro$nevents.t), ncol = 2)
 
     if (test == "Chi2_Nmin1"){
-      r <- suppressWarnings(as.numeric(chisq.test(da, correct = FALSE)$statistic))
+      r <- suppressWarnings(as.numeric(stats::chisq.test(da, correct = FALSE)$statistic))
       N <- sum(da)
-      pval <- pchisq(r*(N-1)/N, 1, lower.tail = FALSE)
+      pval <- stats::pchisq(r*(N-1)/N, 1, lower.tail = FALSE)
     } else if (test %in% c("Chi2", "Yates")){
-      res <- suppressWarnings(prop.test(da, conf.level = conf_level/100, correct = ifelse(test == "Yates", TRUE, FALSE)))
+      res <- suppressWarnings(stats::prop.test(da, conf.level = conf_level/100, correct = ifelse(test == "Yates", TRUE, FALSE)))
       pval <- res$p.value
     } else if (test == "Fisher") {
-      res <- suppressWarnings(fisher.test(da, conf.level = conf_level/100))
+      res <- suppressWarnings(stats::fisher.test(da, conf.level = conf_level/100))
       pval <- res$p.value
     }
 
@@ -153,7 +153,7 @@ sppt_diff <- function(p1.sp, p2.sp, uoa.sp, conf_level = 95, test = "Chi2_Nmin1"
   outcome$SIndex[(outcome$p.value < 1 - conf_level/100) & (outcome$perc.b < outcome$perc.t)] <- -1
 
   # doing the multiple comparison adjustment to the p-values
-  outcome$p.adjusted <- p.adjust(p = outcome$p.value, method = adj)
+  outcome$p.adjusted <- stats::p.adjust(p = outcome$p.value, method = adj)
   outcome[which(outcome$p.adjusted >= 1-conf_level/100), "SIndex"] <- 0
 
   #################################
