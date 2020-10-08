@@ -2,6 +2,8 @@
 
 * Minor updates to code to ensure compatibility with dplyr 1.0.0 and higher.
 
+* Renamed function summary.sppt to summary_sppt to remove confusion wrt S3method
+
 # sppt 0.2.1
 
 * Added checks for SpatialPolygons and SpatialPoints objects. For the spatial

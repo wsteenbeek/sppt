@@ -143,7 +143,7 @@ toy.sp@data
 The standard and robust global S-values can be extracted as such, respectively: `mean(toy.sp$globalS)` and `mean(toy.sp$globalS.robust, na.rm=TRUE)`. A convenience function is provided to output these values in a list:
 
 ```{r}
-summary.sppt(toy.sp)
+summary_sppt(toy.sp)
 ```
 
 

@@ -64,7 +64,7 @@ text(coordinates(points2.sp), label = points2.sp$ID, col="red")
 
 set.seed(76772)
 myoutput <- sppt(base_points.sp = points1.sp, test_points.sp = points2.sp, uoa.sp = areas.sp)
-summary.sppt(myoutput)
+summary_sppt(myoutput)
 myoutput@data
 
 # is exactly the same as:
@@ -82,11 +82,11 @@ head(myoutput[[2]])
 # Vancouver data
 set.seed(9866)
 myoutput <- sppt(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp)
-summary.sppt(myoutput)
+summary_sppt(myoutput)
 
 # Vancouver data, using a bootstrap approach instead of Andresen's subsampling method
 set.seed(9866)
 myoutput <- sppt(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp, bootstrap = TRUE)
-summary.sppt(myoutput)
+summary_sppt(myoutput)
 
 }

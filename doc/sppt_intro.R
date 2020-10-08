@@ -32,7 +32,7 @@ toy.sp <- sppt(points1, points2, areas.sp)
 toy.sp@data
 
 ## -----------------------------------------------------------------------------
-summary.sppt(toy.sp)
+summary_sppt(toy.sp)
 
 ## -----------------------------------------------------------------------------
 if(!require(rgdal)) install.packages("rgdal", repos = "https://cloud.r-project.org/")

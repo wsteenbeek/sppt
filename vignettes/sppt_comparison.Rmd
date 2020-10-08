@@ -147,10 +147,10 @@ The standard and robust global S-values are included in the resulting spatial ob
 toy_r_new@data
 ```
 
-These S-values can also be accessed through the convenience function `summary.sppt()`:
+These S-values can also be accessed through the convenience function `summary_sppt()`:
 
 ```{r}
-summary.sppt(toy_r_new)
+summary_sppt(toy_r_new)
 ```
 
 We see that the `sppt()` R function can reproduce the Java output exactly.
@@ -246,7 +246,7 @@ The Java application produced the following output on screen:
 The S-values created by the `sppt()` function are:
 
 ```{r}
-summary.sppt(vancouver_r)
+summary_sppt(vancouver_r)
 ```
 
 The standard global S-value is slightly different from the value reported by the Java application. As the it refers to the proportion of areas that had stable proportions of crime, the difference in standard global S-value is caused by a difference in the underlying S-Index (which is a value that can differ for each area, indicating stability or change). Are these vectors equal?

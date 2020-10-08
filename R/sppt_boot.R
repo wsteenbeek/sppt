@@ -41,21 +41,23 @@ NULL
 #'
 #' set.seed(76772)
 #' myoutput <- sppt_boot(base_points.sp = points1.sp, test_points.sp = points2.sp, uoa.sp = areas.sp)
-#' summary.sppt(myoutput)
+#' summary_sppt(myoutput)
 #' myoutput@data
 #'
 #' # Vancouver data
 #' set.seed(9866)
 #' myoutput <- sppt_boot(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp)
-#' summary.sppt(myoutput)
+#' summary_sppt(myoutput)
 #'
 #' # Global-S may not be exactly the same when switching Base for Test
 #' # due to random sampling procedure. Compare by doing the sppt_boot() 20 times:
 #' # some global-s values should be the same
 #' set.seed(85335)
-#' reps.output <- replicate(20, mean(sppt_boot(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp)$globalS.robust, na.rm=TRUE))
+#' reps.output <- replicate(20, mean(sppt_boot(vancouver_points1.sp,
+#'        vancouver_points2.sp, vancouver_areas.sp)$globalS.robust, na.rm=TRUE))
 #' set.seed(85335)
-#' reps.output2 <- replicate(20, mean(sppt_boot(vancouver_points2.sp, vancouver_points1.sp, vancouver_areas.sp)$globalS.robust, na.rm=TRUE))
+#' reps.output2 <- replicate(20, mean(sppt_boot(vancouver_points2.sp,
+#'        vancouver_points1.sp, vancouver_areas.sp)$globalS.robust, na.rm=TRUE))
 #' reps.output
 #' reps.output2
 #' reps.output %in% reps.output2
@@ -63,7 +65,7 @@ NULL
 #' # Mimic the original sppt procedure but with resampling of both Base and Test
 #' set.seed(9866)
 #' myoutput <- sppt_boot(points1.sp, points2.sp, areas.sp, bootstrap=FALSE)
-#' summary.sppt(myoutput)
+#' summary_sppt(myoutput)
 #' myoutput@data
 #'
 #' @export

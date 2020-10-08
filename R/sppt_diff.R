@@ -14,8 +14,7 @@ NULL
 #' @param p2.sp           the second points of type SpatialPoints*, order does not matter
 #' @param uoa.sp          the units of analysis of type SpatialPolygons*
 #' @param conf_level      confidence interval, default = 95
-#' @param test            test to conduct, currently either 'Yates' or 'Fisher', default Yates
-#' @param tsmethod        test to conduct, choice of "Chi2_Nmin1", "Chi2",
+#' @param test            test to conduct, choice of "Chi2_Nmin1", "Chi2",
 #'                        "Yates", or "Fisher", default = "Chi2_Nmin1"
 #' @param adj             method to adjust p-values (as per stats::p.adjust), default "BY". To turn off, set to "none".
 #' @return Returns uoa.sp (a spatial polygons data frame) including sppt_diff outcomes.
@@ -27,29 +26,31 @@ NULL
 #' text(coordinates(points2.sp), label = points2.sp$ID, col="red")
 #'
 #' output <- sppt_diff(points1.sp, points2.sp, areas.sp, test="Chi2_Nmin1")
-#' summary.sppt(output)
+#' summary_sppt(output)
 #' output@data
 #'
 #' output <- sppt_diff(points1.sp, points2.sp, areas.sp, test="Fisher")
-#' summary.sppt(output)
+#' summary_sppt(output)
 #' output@data
 #'
-#' sppt_diff(points1.sp, points2.sp, areas.sp, test="????") # should get error message
+#' # sppt_diff(points1.sp, points2.sp, areas.sp, test="????") # should get error message
 #'
 #' # Vancouver data
 #' set.seed(9866)
 #' myoutput <- sppt_diff(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp)
-#' summary.sppt(myoutput)
+#' summary_sppt(myoutput)
 #'
 #' # The sppt_diff() outcomes without correction for multiple comparisons
 #' # are close to sppt_boot() outcomes:
 #' set.seed(9866)
-#' myoutput1 <- sppt_diff(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp, test = "Chi2_Nmin1", adj = "none")
-#' summary.sppt(myoutput1)
+#' myoutput1 <- sppt_diff(vancouver_points1.sp, vancouver_points2.sp,
+#'              vancouver_areas.sp, test = "Chi2_Nmin1", adj = "none")
+#' summary_sppt(myoutput1)
 #'
 #' set.seed(9866)
-#' myoutput2 <- sppt_boot(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp)
-#' summary.sppt(myoutput2)
+#' myoutput2 <- sppt_boot(vancouver_points1.sp, vancouver_points2.sp,
+#'              vancouver_areas.sp)
+#' summary_sppt(myoutput2)
 #'
 #' @export
 sppt_diff <- function(p1.sp, p2.sp, uoa.sp, conf_level = 95, test = "Chi2_Nmin1", adj = "BY"){

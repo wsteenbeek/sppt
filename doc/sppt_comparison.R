@@ -62,7 +62,7 @@ toy_r_new <- sppt(points1.sp.new, points2.sp.new, areas.sp, nsamples=200, percpo
 toy_r_new@data
 
 ## -----------------------------------------------------------------------------
-summary.sppt(toy_r_new)
+summary_sppt(toy_r_new)
 
 ## ---- fig.height = 6, fig.width = 6, fig.align = "center", echo = FALSE, message=FALSE, fig.cap = "Vancouver Base points"----
 plot(vancouver_areas.sp)
@@ -102,7 +102,7 @@ table(vancouver_r_df$PctBsePts == vancouver_java_df$PctBsePts)
 table(vancouver_r_df$PctTstPts == vancouver_java_df$PctTstPts)
 
 ## -----------------------------------------------------------------------------
-summary.sppt(vancouver_r)
+summary_sppt(vancouver_r)
 
 ## -----------------------------------------------------------------------------
 table(vancouver_r_df$SIndex == vancouver_java_df$SIndex)

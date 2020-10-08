@@ -3,12 +3,12 @@ Type: Package
 Title: Spatial Point Pattern Test
 Version: 0.2.2
 Authors@R: c(
-    person("Wouter", "Steenbeek", role = c("aut", "cre"), email = "wsteenbeek@nscr.nl"),
+    person("Wouter", "Steenbeek", role = c("aut", "cre", "cph"), email = "wsteenbeek@nscr.nl"),
     person("Christophe", "Vandeviver", role = c("aut"), email = "christophe.vandeviver@ugent.be"),
     person("Martin", "Andresen", role = c("aut"), email = "andresen@sfu.ca"),
     person("Nicolas", "Malleson", role = c("aut"), email = "n.s.malleson@leeds.ac.uk"),
     person("Andrew", "Wheeler", role = c("aut"), email = "apwheele@gmail.com"))
-Author: Wouter Steenbeek [aut, cre],
+Author: Wouter Steenbeek [aut, cre, cph],
   Christophe Vandeviver [aut],
   Martin Andresen [aut],
   Nicolas Malleson [aut],

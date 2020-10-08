@@ -3,7 +3,7 @@
 export(sppt)
 export(sppt_boot)
 export(sppt_diff)
-export(summary.sppt)
+export(summary_sppt)
 import(methods)
 import(sp)
 importFrom(dplyr,group_by)

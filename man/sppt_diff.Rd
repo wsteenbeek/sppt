@@ -22,12 +22,10 @@ sppt_diff(
 
 \item{conf_level}{confidence interval, default = 95}
 
-\item{test}{test to conduct, currently either 'Yates' or 'Fisher', default Yates}
+\item{test}{test to conduct, choice of "Chi2_Nmin1", "Chi2",
+"Yates", or "Fisher", default = "Chi2_Nmin1"}
 
 \item{adj}{method to adjust p-values (as per stats::p.adjust), default "BY". To turn off, set to "none".}
-
-\item{tsmethod}{test to conduct, choice of "Chi2_Nmin1", "Chi2",
-"Yates", or "Fisher", default = "Chi2_Nmin1"}
 }
 \value{
 Returns uoa.sp (a spatial polygons data frame) including sppt_diff outcomes.
@@ -47,28 +45,30 @@ text(coordinates(points1.sp), label = points1.sp$ID, col="blue")
 text(coordinates(points2.sp), label = points2.sp$ID, col="red")
 
 output <- sppt_diff(points1.sp, points2.sp, areas.sp, test="Chi2_Nmin1")
-summary.sppt(output)
+summary_sppt(output)
 output@data
 
 output <- sppt_diff(points1.sp, points2.sp, areas.sp, test="Fisher")
-summary.sppt(output)
+summary_sppt(output)
 output@data
 
-sppt_diff(points1.sp, points2.sp, areas.sp, test="????") # should get error message
+# sppt_diff(points1.sp, points2.sp, areas.sp, test="????") # should get error message
 
 # Vancouver data
 set.seed(9866)
 myoutput <- sppt_diff(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp)
-summary.sppt(myoutput)
+summary_sppt(myoutput)
 
 # The sppt_diff() outcomes without correction for multiple comparisons
 # are close to sppt_boot() outcomes:
 set.seed(9866)
-myoutput1 <- sppt_diff(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp, test = "Chi2_Nmin1", adj = "none")
-summary.sppt(myoutput1)
+myoutput1 <- sppt_diff(vancouver_points1.sp, vancouver_points2.sp,
+             vancouver_areas.sp, test = "Chi2_Nmin1", adj = "none")
+summary_sppt(myoutput1)
 
 set.seed(9866)
-myoutput2 <- sppt_boot(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp)
-summary.sppt(myoutput2)
+myoutput2 <- sppt_boot(vancouver_points1.sp, vancouver_points2.sp,
+             vancouver_areas.sp)
+summary_sppt(myoutput2)
 
 }
