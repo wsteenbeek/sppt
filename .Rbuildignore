@@ -1,7 +1,7 @@
-^.*\.Rproj$         # Designates the directory as an RStudio Project
-^\.Rproj\.user$     # Used by RStudio for temporary files
-^README\.Rmd$       # An Rmd file used to generate README.md
+^.*\.Rproj$
+^\.Rproj\.user$
+^README\.Rmd$
 ^README-.*\.png$
 ^doc$
 ^Meta$
-^data-raw$          # Code used to create data included in the package
+^data-raw$
