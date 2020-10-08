@@ -1,0 +1,235 @@
+---
+title: "Introduction to Spatial Point Pattern Test"
+author: "Martin Andresen & Wouter Steenbeek"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Introduction to Spatial Point Pattern Test}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+## Introduction
+
+The spatial point pattern test allows for the statistical comparison in the similarity of two (or more) point patterns without being concerned about the statistical concepts of randomness, uniformity, and clustering. If you have a random or uniform point pattern, you can use this spatial point pattern test to not only test if your data are uniform or random, but where your set of points differ from a uniform or random pattern.
+
+This test would be used if you are fundamentally interested in the similarity of two (or more) spatial point patterns. Do incidences of some form of cancer have a similar spatial pattern to the locations of known risk factors? Does crime have a similar spatial pattern as drinking establishments? Is the spatial pattern of exports similar to the spatial pattern of imports? Additionally, this spatial point pattern test can be used in longitudinal contexts as well: Is the spatial pattern of crime this year similar to the spatial pattern of crime last year, or ten years ago?
+
+
+## Brief explanation of SPPT procedure
+
+Though conceptually simple, this test is simulation-based so it is computationally intense. The test is computed in this R package as follows:
+
+1. Nominate a base dataset and count, for each area, the number of points that fall within it. This base dataset may also be thought of as your reference dataset. Which data to you want to look for difference from? If you are interested in change over time with 2015 and 2016 data, the 2015 data will be your base data set.
+
+2. The other dataset, when comparing two point patterns, is then the test dataset. From the test dataset, randomly sample 85 percent of the points, with replacement. As with the previous step, count the number of points within each area using the sample. This is effectively a bootstrap created by sampling from the test dataset.
+
+    An 85 percent sample is based on the minimum acceptable hit rate to maintain spatial patterns, determined by Ratcliffe (2004). Maintaining the spatial pattern of the complete data set is important so this is used as a benchmark for sampling. An 85 percent sample was for the purposes of generating as much variability as possible while maintaining the original spatial pattern. Also note that “replacement” in this context refers to subsequent samples; any one point may only be sampled once per iteration in this procedure to mimic Ratcliffe (2004).
+
+3. Repeat (2) a number of times (200 is the default).
+
+4. For each area in the test dataset and for each sample (200 if using the default), calculate the percentage of points that have been identified in each area. Rank these (200) percentages from lowest to highest. Use these percentages to generate a 95 percent nonparametric confidence interval by removing the top and bottom 2.5 percent of all counts (5 from the top and 5 from the bottom in this case). The minimum and maximum of the remaining percentages represent the confidence interval. It should be noted that the effect of the sampling procedure will be to reduce the number of observations in the test dataset but, by using percentages rather than the absolute counts, comparisons between data sets can be made even if the total number of observations are different.
+
+5. Calculate the percentage of points within each area for the base dataset and compare this to the confidence interval generated from the test dataset. If the base percentage falls within the confidence interval then the two datasets exhibit a similar percentage of points in the given area. Otherwise they are significantly different. Repeat this for each spatial unit under analysis.
+
+This procedure allows for statistically significant changes/differences to be identified at the local level.
+
+
+## An extended explanation of SPPT procedure
+
+The first step for the test is to identify the necessary data for analysis. Though a somewhat manifest statement, there are some data conditions necessary to conduct the test. At this time, two geo-referenced point-based data sets for comparison are necessary. The geo-referencing is necessary because each point must be assigned to an individual areal unit of analysis. The areal unit data may take any number of different forms: a set of grids placed over the study area, neighborhood boundaries, census tracts, or some other form of census boundary areas (census block groups, dissemination areas, output areas, and so on). Though all of the examples just listed would have complete coverage over the study area, this is not necessary for the test. Rather, all of the geo-referenced point data need to be assigned to an area; this becomes particularly important for some research questions. Briefly, street segments have been used in applications of this spatial point pattern test; street segments are polyline files that do not have complete coverage over a study area, by definition of the data. During the geocoding process, points are often placed on the appropriate side of the street based on the address locator such that the points are not directly on the polyline. This can be overcome through the use of small-area buffers around each street segment to place each geo-referenced point within, but there will still be empty spaces between the buffers.
+
+Once all of the necessary data are collected, the first decision that needs to be made is which geo-referenced point data set shall be deemed the base data set and the test data set; the base data are considered the baseline. From the perspective of undertaking the test, this choice may be of little consequence, but there may be “natural” choices. For example, if the spatial point patterns of a phenomenon are being compared over time, 2003 and 2016, a natural choice is to have the 2003 data as the base data set and the 2016 data as the test data set. In this situation, the implicit question is whether the 2016 data have a similar spatial pattern to the 2003 data: has something changed over the years?
+
+The base data set is manipulated the least during the test. Each geo-referenced point is assigned to an areal unit, the number of points within each areal unit is aggregated, and the percentage of the points within each areal unit is calculated. This allows for the comparison of data sets with different numbers of points. This set of percentages will then be used to compare to the test data set that undergoes a Monte Carlo simulation process.
+
+Similar to the base data set, the geo-referenced points within the test data set are assigned to an areal unit. At this stage, however, the process for the two data sets changes. Rather than calculating a single percentage for each areal unit, a Monte Carlo simulation is performed to create a confidence interval for each areal unit. A random sample (with replacement) of the test data set is undertaken, selecting 85 percent of the entire test data set—this value is based on Ratcliffe (2004), but can be modified by the user, as will be shown below. The percentages of points falling within each areal unit of this randomly sampled data set is then calculated and stored. This process is repeated a number of times in order to calculate a confidence interval for subsequent statistical testing (200 is used for convenient cut-offs to generate a 95 percent confidence interval).  All of these percentages within each areal unit can then be ranked, removing the top and bottom 2.5 percent of percentages to create a 95 percent nonparametric confidence interval. The percentage for the base and the upper-lower estimates for the test data are then compared. If the percentage of points for an areal unit in the base data set is within the corresponding confidence interval for the test data set, this areal unit is considered similar. This is repeated for each of the individual areal units of analysis.
+
+This information can then be applied to calculate a global Index of Similarity, S, that ranges from 0 (no similarity) to 1 (perfect similarity). This Index is calculated as follows:
+
+$$S = \frac{\sum_{i=1}^n s_i}{n}$$
+
+where $n$ is the number of areas, $s_i$ is equal 1 if the spatial pattern of two data sets is considered similar for areal unit $i$, and 0 otherwise. This Index of Similarity, then, represents the proportion of areal units that exhibit similar spatial patterns. There are two Indices of Similarity: the standard and robust global S-values. The standard Index of Similarity uses all of the areal units to measure $n$.  The robust S-value, however, is calculated only considering the number of areal units that actually have events occurring within them, in either the base of test data sets. This distinction can become important when the number of areal units outnumbers the number of events being investigated: relatively rare criminal events and street segments, for example. In this latter situation there may only be 1,000 criminal events and 10,000 street segments. In such an example, even if the test data criminal events are all on different street segments than the test data criminal events (the Index of Similarity should be zero), the standard global S-value will be 0.80 because of al the zero values that will appear “similar” within the test. The robust global S-value only considers where the events actually occur and will return a robust global S-value of zero, in this case. The output from the spatial point pattern test can also be mapped such that the researcher can visualize where the two geo-referenced point-based data sets are (dis)similar.
+
+The last decision to be made is whether the two spatial point patterns are to be considered similar, or not. This is done using the (robust) global S-Index value. Though there is no statistical method of identifying a threshold for similarity, a rule of thumb has been used in the application of this test. There are rules of thumb for the interpretation of many statistics: at what point does R2 indicate an acceptable level for goodness-of-fit? The rule of thumb used in the current context relates to the literature that considers multicollinearity in a multiple regression context and bivariate correlations. With regard to the multiple regression context, the variance inflation factor is often used to measure the degree of multicollinearity. O’Brien (2007) states that variance inflation factors ranging from 5 to 10 (and greater, of course) may be cause for concern. In a bivariate correlation context (most similar to the application of this spatial point pattern test), this corresponds to correlation coefficients ranging from 0.80 to 0.90—Cohen (1988) considers lower levels of correlation to be considered “strong” but these higher values are considered to be more conservative. Consequently, the research implementing this test most often uses 0.80 as a threshold for similarity. However, it should be noted that this threshold is not, and should not, be considered in a binary context such as statistical significance. As the S-Index value approaches 0.80, the two spatial point patterns should be considered approaching similarity.
+
+The general underlying principle for this spatial point pattern test is that the spatial pattern of the base data set is given (the percentages for the individual areal units are just calculated), but the spatial pattern for the test data set is one possible realization of the actual spatial point pattern. The randomization process maintains the underlying spatial pattern (data generating process) of the test data set, while creating sampling variation allowing for nonparametric statistical inference through the calculation of confidence intervals.
+
+The output of the test consists of two parts. First, there are the Indices of Similarities, discussed above that range from 0 (no similarity) to 1 (perfect similarity. Second, the test generates mappable output to show where statistically significant change occurs; i.e. which census tracts, dissemination areas, or other areas have undergone a statistically significant change. Though this spatial point pattern test is not a local indicator of spatial association (LISA, see Anselin 1995) and there is much more to LISA than being able to produce maps of results, it is in the spirit of LISA because the output may be mapped.
+
+
+## Toy example data
+
+```{r, eval = TRUE, warning = FALSE, message = FALSE}
+library("sppt")
+```
+
+Spatial objects areas.sp, points1.sp, and points2.sp, from now on referred to as the 'toy data', are included in the package and will be used to illustrate the `sppt()` function.
+
+```{r, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"}
+plot(areas.sp)
+points(points1.sp, col="blue", pch = 19)
+points(points2.sp, col="red", pch = 15)
+text(coordinates(areas.sp), label = areas.sp$ID, font = 2)
+```
+
+The areas' ID numbers are printed in black, placed at the area centroid. The base points are blue circles, and the test points are red squares.
+
+For illustrative purposes, let's remove all points from area `15` (which happen to have an `ID` of `5` in both the base dataset and the test dataset:
+
+```{r}
+points1 <- points1.sp[points1.sp$ID != 5, ]
+points2 <- points2.sp[points2.sp$ID != 5, ]
+```
+
+So the new data looks like this:
+
+```{r, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"}
+plot(areas.sp)
+points(points1, col="grey", pch = 19)
+points(points2, col="grey", pch = 19)
+points(points1[areas.sp, ], col="blue", pch = 19)
+points(points2[areas.sp, ], col="red", pch = 15)
+text(coordinates(areas.sp), label = areas.sp$ID, font = 2)
+```
+
+
+### Running the function
+
+The `sppt` is an area-based test, so the points located outside the areas of interest are ignored. These points are colored grey. Let's now run the R `sppt()` function:
+
+```{r}
+set.seed(39346) # set seed for reproducibility
+toy.sp <- sppt(points1, points2, areas.sp)
+```
+
+The defaults of the `sppt()` function are to randomly sample 85 percent of the 
+points, using 200 repetitions, and a 95 percent confidence interval. So the
+command above is the same as:
+
+```{r, eval = FALSE}
+set.seed(39346) # set seed for reproducibility
+toy.sp <- sppt(points1, points2, areas.sp,
+               nsamples=200, percpoints=85, conf_level=95)
+```
+
+The spatial object `toy.sp` is produced, which is a copy of the `areas.sp` spatial object but with new variables:
+
+```{r}
+toy.sp@data
+```
+
+### Explanation of the output variables
+
+| Variable | Explanation |
+|-----------------|----------------------------------------------------|
+| uoa_id        | a unique identity variable for the units of analysis | 
+| SIndex        | a variable that indicates if a unit of analysis is dissimilar, a value of 1 indicates dissimilarity, 0 otherwise |
+| NumBsePts | the number of points in the base data set for that unit of analysis |
+| NumTstPts     | the number of points in the test data set for that unit of analysis      |
+| PctBsePts     | the percentage of points in the base data set for that unit of analysis      |
+| PctTstPts     | the percentage of points in the test data set for that unit of analysis       |
+| SumBseTstPts     | the sum of the number of points in the base and test data sets for that unit of analysis       |
+| ConfLowP     | the lower value of the confidence interval for the test data set after the Monte Carlo simulation      |
+| ConfUppP     | the upper value of the confidence interval for the test data set after the Monte Carlo simulation       |
+| localS     | s-value for each unit of analysis taking on values of 1 (test greater than base), -1 (base greater than test), and 0 otherwise      |
+| similarity     | indicates if the unit of analysis is similar in values, with a value of 1 indicating similarity, 0 otherwise       |
+| globalS     | the standard global S-index value for the test, the same value for each unit of analysis      |
+| SIndex.robust     | the robust version of the variable “SIndex”, with a value of “NA” if “SumBseTstPts” is zero      |
+| localS.robust     | the robust version of the variable “localS”, with a value of “NA” if “SumBseTstPts” is zero       |
+| similarity.robust     | the robust version of the variable “similarity”, with a value of “NA” if “SumBseTstPts” is zero       |
+| globalS.robust     | the robust global S-index value for the test, the same value for each unit of analysis, with a value of “NA” if “SumBseTstPts” is zero      |
+
+The standard and robust global S-values can be extracted as such, respectively: `mean(toy.sp$globalS)` and `mean(toy.sp$globalS.robust, na.rm=TRUE)`. A convenience function is provided to output these values in a list:
+
+```{r}
+summary.sppt(toy.sp)
+```
+
+
+## An example importing data for use in sppt
+
+In order to import your own spatial data into R, the package `rgdal` will need to be installed. In the next example, residential burglary data from the Vancouver Police Department (2003 and 2016) are used, as well as census boundary units (dissemination areas) from Statistics Canada.
+
+A dissemination area is a small relatively small geographic area composed of one or more neighbouring dissemination blocks, with a population of 400 to 700 persons. All of Canada is divided into dissemination areas. It is the smallest standard geographic area for which all census data are disseminated. Dissemination areas cover all the territory of Canada. They are available for free download [here](http://www12.statcan.gc.ca/census-recensement/2011/geo/bound-limit/bound-limit-2016-eng.cfm).
+
+Residential burglary data are available from Vancouver's [Open Data Catalogue](http://data.vancouver.ca/datacatalogue/crime-data.htm). The following 
+variables are available:
+
+| Variable | Explanation |
+|-----------------|----------------------------------------------------|
+| TYPE        | the crime type (residential burglary, commercial burglary, mischief, theft of vehicle, theft from vehicle, other theft are available) | 
+| YEAR        | the year the event took place |
+| MONTH | the month (numeric value) the event took place |
+| DAY     | the date (numeric, 1 - 31) the event took place      |
+| HOUR     | the hour (24 hour clock) the event took place      |
+| MINUTE     | the minute the event took place      |
+| HUNDRED_BLOCK     | the address rounded to the 100 block (123 Main Street -> 1XX Main Street) the event took place      |
+| NEIGHBOURHOOD     | the official neighbourhood in which the event took place (one of 22 official Vancouver neighbourhoods)      |
+| X     | x-coordinate for the location where the event took place      |
+| Y     | y-coordinate for the location where the event took place      |
+
+```{r}
+if(!require(rgdal)) install.packages("rgdal", repos = "https://cloud.r-project.org/")
+
+burglary2003 <- rgdal::readOGR(dsn = "../inst/extdata", layer = "Vancouver_Residential_Burglary_2003") # The shapefiles are found in the "inst/extdata" folder within the package
+burglary2016 <- rgdal::readOGR(dsn = "../inst/extdata", layer = "Vancouver_Residential_Burglary_2016")
+das <- rgdal::readOGR(dsn = "../inst/extdata", layer = "Vancouver_DAs_2011_Census_UTMz10")
+```
+
+Before any analyses are performed, it is important to check that all shapefiles have the same projection otherwise the test will not run:
+
+```{r}
+proj4string(burglary2003)
+proj4string(burglary2016)
+proj4string(das)
+```
+
+```{r, fig.height = 6, fig.width = 6, fig.align = "center"}
+plot(das)
+points(burglary2003, col="blue", pch=16, cex=.3)
+points(burglary2016, col="red", pch=16, cex=.3)
+```
+
+Using the default values for sppt, as above:
+
+```{r}
+myoutput <- sppt(burglary2003, burglary2016, das, nsamples = 200, percpoints = 85, conf_level = 95)
+```
+
+```{r}
+mean(myoutput$globalS) 
+mean(myoutput$globalS.robust, na.rm=TRUE) 
+```
+
+```{r}
+head(myoutput@data, n=10) # the first 10 cases of data
+```
+
+The output of the sppt can be easily mapped, here simply using the `plot` command (but see the [ggplot2](https://CRAN.R-project.org/package=ggplot2) package):
+
+```{r, fig.height = 6, fig.width = 6, fig.align = "center"}
+plot(myoutput)
+plot(myoutput[which(myoutput$localS == -1),], col="#2c7bb6", add = TRUE)
+plot(myoutput[which(myoutput$localS == 1),], col="#d7191c", add = TRUE)
+plot(myoutput[which(myoutput$localS == 0),], col="#ffffbf", add = TRUE)
+```
+
+Blue refers to a statistically significant decrease between 2003 and 2016 in the percentage of burglaries in that area, red refers to a statistically significant increase, and yellow refers to statistically insignificant differences. 
+
+The output of the test (including all the variables) can be exported as a shapefile:
+
+```{r, eval = FALSE}
+rgdal::writeOGR(obj = myoutput, dsn = "C:/My/File/Path/Here", layer = "Burglary_2003_2016_DAs_SPPT", driver = "ESRI Shapefile")
+```
+
+
+## References
+
+Anselin, L. (1995). Local indicators of spatial association -- LISA. *Geographical Analysis*, 27(2), 93 - 115.
+
+Cohen, J. (1988) *Statistical power analysis for the behavioral sciences* (2nd ed.). Hillsdale, NJ: Erlbaum.
+
+O’Brien, R.M. (2007). A caution regarding rules of thumb for variance inflation factors. *Quality & Quantity*, 41(5), 673 – 690.
+
+Ratcliffe, J.H. (2004). Geocoding crime and a first estimate of a minimum acceptable hit rate. *International Journal of Geographical Information Science*, 18(1), 61 - 72.

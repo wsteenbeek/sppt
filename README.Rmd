@@ -106,21 +106,15 @@ between this R package and an existing Java application that has been written by
 [Nick Malleson](http://nickmalleson.co.uk/); and the new functions `sppt_boot()`
 and `sppt_diff()`.
 
-You can view which vignettes are available using:
+By far the easiest way to view the vignettes are these direct links, courtesy of the [GitHub HTML Preview service](http://htmlpreview.github.io/):
 
-```{r, eval = FALSE}
-browseVignettes("sppt")
-```
+1. [Introduction to Spatial Point Pattern Test](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/doc/sppt_intro.html)
 
-To save time and because they may require additional packages, `devtools::install_github()` may not build vignettes by default. If the command above returns that vignettes are not found, by far the easiest way to view the vignettes are these direct links, courtesy of the [GitHub HTML Preview service](http://htmlpreview.github.io/):
+2. [Comparing R vs Java](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/doc/sppt_comparison.html)
 
-1. [Introduction to Spatial Point Pattern Test](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/inst/doc/sppt_intro.html)
+3. [Proportion difference tests](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/doc/sppt_diff.html)
 
-2. [Comparing R vs Java](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/inst/doc/sppt_comparison.html)
-
-3. [Proportion difference tests](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/inst/doc/sppt_diff.html)
-
-If instead you want to access the vignettes from R itself, you need to take a few additional steps:
+If instead you want to access the vignettes from R itself you need to take a few additional steps, because `devtools::install_github()` does not build vignettes by default to save time and because it may require additional packages. 
 
 1. Install the rmarkdown package with `install.packages("rmarkdown")`
 
@@ -128,7 +122,7 @@ If instead you want to access the vignettes from R itself, you need to take a fe
 
 3. Then, install the package again but force building of the vignettes using `devtools::install_github("wsteenbeek/sppt", build_vignettes = TRUE, force = TRUE)`. This will take a few minutes.
 
-You should now be able to view which vignettes are available using:
+Afterwards, you should be able to view which vignettes are available using:
 
 ```{r, eval = FALSE}
 browseVignettes("sppt")
