@@ -33,18 +33,18 @@ An archive of older versions of the package can be found here:
 
 You can install the package from this [GitHub
 repository](https://github.com/wsteenbeek/sppt). You first need to
-install the [devtools](https://CRAN.R-project.org/package=devtools)
+install the [remotes](https://CRAN.R-project.org/package=remotes)
 package.
 
 ``` r
-install.packages("devtools")
+install.packages("remotes")
 ```
 
 Then install sppt using the `install_github` function in the
-[devtools](https://CRAN.R-project.org/package=devtools) package.
+[remotes](https://CRAN.R-project.org/package=remotes) package.
 
 ``` r
-devtools::install_github("wsteenbeek/sppt", force = TRUE)
+remotes::install_github("wsteenbeek/sppt")
 ```
 
 ## Example
@@ -133,7 +133,7 @@ service](http://htmlpreview.github.io/):
     tests](http://htmlpreview.github.io/?https://github.com/wsteenbeek/sppt/blob/master/doc/sppt_diff.html)
 
 If instead you want to access the vignettes from R itself you need to
-take a few additional steps, because `devtools::install_github()` does
+take a few additional steps, because `remotes::install_github()` does
 not build vignettes by default to save time and because it may require
 additional packages.
 
@@ -143,7 +143,7 @@ additional packages.
     (and afterwards restart your computer)
 
 3.  Then, install the package again but force building of the vignettes
-    using `devtools::install_github("wsteenbeek/sppt", build_vignettes =
+    using `remotes::install_github("wsteenbeek/sppt", build_vignettes =
     TRUE, force = TRUE)`. This will take a few minutes.
 
 Afterwards, you should be able to view which vignettes are available
