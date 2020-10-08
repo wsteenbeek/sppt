@@ -87,7 +87,7 @@ sppt_diff <- function(p1.sp, p2.sp, uoa.sp, conf_level = 95, test = "Chi2_Nmin1"
 
   # number of points per unit (only for units that have any points)
   npoints_per_uoa <- dplyr::group_by(basedata_over_results, uoa_id)
-  npoints_per_uoa <- dplyr::summarize(npoints_per_uoa, npoints = dplyr::n())
+  npoints_per_uoa <- dplyr::summarise(npoints_per_uoa, npoints = dplyr::n())
   npoints_per_uoa <- as.data.frame(npoints_per_uoa)
 
   # fill outcome data.frame
@@ -111,7 +111,7 @@ sppt_diff <- function(p1.sp, p2.sp, uoa.sp, conf_level = 95, test = "Chi2_Nmin1"
 
   # number of points per unit (only for units that have any points)
   npoints_per_uoa <- dplyr::group_by(testdata_over_results, uoa_id)
-  npoints_per_uoa <- dplyr::summarize(npoints_per_uoa, npoints = dplyr::n())
+  npoints_per_uoa <- dplyr::summarise(npoints_per_uoa, npoints = dplyr::n())
   npoints_per_uoa <- as.data.frame(npoints_per_uoa)
 
   # base data outcome data.frame

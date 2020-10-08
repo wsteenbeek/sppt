@@ -100,7 +100,7 @@ sppt_boot <- function(base_points.sp, test_points.sp, uoa.sp, nsamples=200, perc
 
   # number of points per unit (only for units that have any points)
   npoints_per_uoa <- dplyr::group_by(basedata_over_results, uoa_id)
-  npoints_per_uoa <- dplyr::summarize(npoints_per_uoa, npoints = dplyr::n())
+  npoints_per_uoa <- dplyr::summarise(npoints_per_uoa, npoints = dplyr::n())
   npoints_per_uoa <- as.data.frame(npoints_per_uoa)
 
   # base data outcome data.frame
@@ -123,7 +123,7 @@ sppt_boot <- function(base_points.sp, test_points.sp, uoa.sp, nsamples=200, perc
 
   # number of points per unit (only for units that have any points)
   npoints_per_uoa <- dplyr::group_by(testdata_over_results, uoa_id)
-  npoints_per_uoa <- dplyr::summarize(npoints_per_uoa, npoints = dplyr::n())
+  npoints_per_uoa <- dplyr::summarise(npoints_per_uoa, npoints = dplyr::n())
   npoints_per_uoa <- as.data.frame(npoints_per_uoa)
 
   # base data outcome data.frame
@@ -156,7 +156,7 @@ sppt_boot <- function(base_points.sp, test_points.sp, uoa.sp, nsamples=200, perc
 
     # number of points per unit (only for units that have any points)
     npoints_per_uoa <- dplyr::group_by(data_over_results_sample, uoa_id)
-    npoints_per_uoa <- dplyr::summarize(npoints_per_uoa, npoints = dplyr::n())
+    npoints_per_uoa <- dplyr::summarise(npoints_per_uoa, npoints = dplyr::n())
     npoints_per_uoa <- as.data.frame(npoints_per_uoa)
 
     # sample outcome data.frame
