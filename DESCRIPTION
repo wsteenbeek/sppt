@@ -1,7 +1,7 @@
 Package: sppt
 Type: Package
 Title: Spatial Point Pattern Test
-Version: 0.2.2
+Version: 0.2.3
 Authors@R: c(
     person("Wouter", "Steenbeek", role = c("aut", "cre", "cph"), email = "wsteenbeek@nscr.nl"),
     person("Christophe", "Vandeviver", role = c("aut"), email = "christophe.vandeviver@ugent.be"),

@@ -1,8 +1,15 @@
+# sppt 0.2.3
+
+* Added generalized S-index
+
+* Touch-ups to vignettes, helper functions, and documentation due to
+  generalized S-index
+
 # sppt 0.2.2
 
 * Minor updates to code to ensure compatibility with dplyr 1.0.0 and higher.
 
-* Renamed function summary.sppt to summary_sppt to remove confusion wrt S3method
+* Renamed function summary.sppt to summary_sppt to remove confusion wrt S3method.
 
 # sppt 0.2.1
 

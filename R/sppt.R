@@ -140,8 +140,7 @@ sppt <- function(base_points.sp, test_points.sp, uoa.sp, outputlist = FALSE, nsa
   }
 
   ## Function: for a sample of points, calculate number of points in each unit of analysis
-  calculate.points.per.unit <- function(nsample, data_over_results){
-
+  calculate.points.per.unit <- function(data_over_results, bootstrap){
     # select sample of base points
     points_sample <- sample(data_over_results$point_id, size = samplesize, replace = bootstrap)
 
@@ -166,7 +165,7 @@ sppt <- function(base_points.sp, test_points.sp, uoa.sp, outputlist = FALSE, nsa
   }
 
   # get all samples in one list
-  allsamples <- lapply(1:nsamples, function(x, y) calculate.points.per.unit(x, testdata_over_results))
+  allsamples <- lapply(1:nsamples, function(x) calculate.points.per.unit(testdata_over_results, bootstrap = bootstrap))
 
   # extract the percentage objects only, per areal unit
   allperc <- do.call(cbind, lapply(allsamples, function(x) x["perc"]))
@@ -239,6 +238,15 @@ sppt <- function(base_points.sp, test_points.sp, uoa.sp, outputlist = FALSE, nsa
   outcome.sp$localS.robust[include_for_robust] <- outcome.sp$localS[include_for_robust]
   outcome.sp$similarity.robust[include_for_robust] <- outcome.sp$similarity[include_for_robust]
   outcome.sp$globalS.robust[include_for_robust] <- mean(outcome.sp$similarity.robust, na.rm=TRUE)
+
+
+  ### Generalized robust globalS
+  denom_gen <- min(
+    sum(outcome.sp$NumBsePts),
+    sum(outcome.sp$NumTstPts),
+    sum(include_for_robust)
+  )
+  outcome.sp$generalizedS.robust <- sum(outcome.sp$similarity.robust, na.rm=TRUE) / denom_gen
 
 
   #################################

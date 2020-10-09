@@ -11,7 +11,7 @@ vignette: >
 
 ## Introduction
 
-The paper 'Wheeler, A., Steenbeek, W., & Andresen, M.A. (2018). Testing for Similarity in Area-Based Spatial Patterns: Alternative Methods to Andresen's Spatial Point Pattern Test. (SSRN: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3111822)' discusses several limitations of Andresen's original SPPT. In summary, these limitations are:
+The paper 'Wheeler, A. P., Steenbeek, W., & Andresen, M. A. (2018). Testing for similarity in area‐based spatial patterns: Alternative methods to Andresen's spatial point pattern test. *Transactions in GIS*, 22(3), 760-774' discusses several limitations of Andresen's original SPPT. In summary, these limitations are:
 
 1. One must arbitrarily choose which point pattern is the base and test dataset, but results are not necessarily invariant to this choice. "For example, if the test set has a much larger sample size, it will result in smaller confidence intervals and, subsequently, more areas may be marked as statistically different. If you switched the analysis so that the smaller sample size was the test set, the intervals around the proportions would be much larger and, thus, the researcher may conclude the patterns are more similar." (Wheeler et al. 2018)
 
@@ -58,7 +58,7 @@ toy.sp@data
 toy2.sp@data
 ```
 
-Although the order of variables are switched, it's easy to see all variables up to and including PctTstPts are similar. However, the confidence intervals are different, leading to different `localS` and `similarity` values, in turn producing a very different `globalS`! This is definitely not the behavior we'd want from the test. (Note also in the toy2.sp output that the confidence interval of the test points for areal unit in row #4 equals 0% to 0%.)
+Although the order of variables are switched, it's easy to see all variables up to and including PctTstPts are similar. However, the confidence intervals are different, leading to different `localS` and `similarity` values, in turn producing a very different `globalS`! This is definitely not the behavior we'd want from the test.
 
 
 ## Proportion difference tests
@@ -68,11 +68,12 @@ Realizing that SPPT is a procedure that aims to test the difference in proportio
 In fact, the package `sppt` >= 0.1.5 has **two** new functions:
 
 - `sppt_boot()`, that calculate differences in proportions using a bootstrap resampling procedure for both point datasets.
+
 - `sppt_diff()`, that implements the direct tests with a variety of methods. For both, a multiple comparisons correction is possible based on (e.g.) the false discovery rate (the default).
 
 ### sppt_boot()
 
-`sppt_boot()` diffes from the original `sppt()` in that it does a resampling procedure on both Base and Test data. This function takes a random sample from Base and Test for each areal unit, calculates the proportion of sampled Base and Test points in each areal unit, and then the difference between the two percentages is calculated immediately (and this is done nsamples times for all areal units). If the 95% distribution of the differences between (resampled) Base and Test percentages excludes 0, they are deemed statistically significantly different from each other.
+`sppt_boot()` differs from the original `sppt()` in that it does a resampling procedure on both Base and Test data. This function takes a random sample from Base and Test for each areal unit, calculates the proportion of sampled Base and Test points in each areal unit, and then the difference between the two percentages is calculated immediately (and this is done nsamples times for all areal units). If the 95% distribution of the differences between (resampled) Base and Test percentages excludes 0, they are deemed statistically significantly different from each other.
 
 The standard settings of `bootstrap = TRUE` make this a real bootstrap procedure: (a) for each sampling loop (nsamples of times) as many points are sampled as present in the data (so no longer a 85% selection!); (b) points are sampled WITH replacement. Using this bootstrapping method the researcher no longer needs to make a choice of (85%) `percpoints`. If one does want to mimic the behavior of standard `sppt()` but with the added improvement that the choice of Base and Test data does not affect results, set `percpoints` to `85` and `bootstrap` to `FALSE`.
 
@@ -121,7 +122,7 @@ mean(myoutput_boot$globalS)
 mean(myoutput_diff$globalS)
 ```
 
-The difference between the original `sppt()` and the new functions is massive!
+The differences between the original `sppt()` and the new functions are massive!
 
 
 ## The new functions in action: simulated data
@@ -165,7 +166,7 @@ points(pts1, col=scales::alpha("blue", .3), pch=16, cex=.1)
 points(pts2, col=scales::alpha("red", .3), pch=16, cex=.1)
 ```
 
-For the purposes of this test, we remove areal units that have fewer than 100 points in either Base or Test:
+For the purposes of this test, we remove *areal units* that have fewer than 100 points in either Base or Test (and the points that afterwards no longer have an associated areal unit):
 
 ```{r}
 if(!require(rgeos)) install.packages("rgeos", repos = "https://cloud.r-project.org/")
@@ -235,4 +236,4 @@ Campbell, I. (2007). Chi-squared and Fisher-Irwin tests of two-by-two tables wit
 
 Fisher, R.A. (1925). *Statistical methods for research workers*. Oliver and Boyd: Edinburgh
 
-Wheeler, A., Steenbeek, W., & Andresen, M.A. (2018). Testing for Similarity in Area-Based Spatial Patterns: Alternative Methods to Andresen's Spatial Point Pattern Test. SSRN: https://papers.ssrn.com/sol3/papers.cfm?abstract_id=3111822.
+Wheeler, A. P., Steenbeek, W., & Andresen, M. A. (2018). Testing for similarity in area‐based spatial patterns: Alternative methods to Andresen's spatial point pattern test. *Transactions in GIS*, 22(3), 760-774.

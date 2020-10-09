@@ -15,6 +15,7 @@ The spatial point pattern test allows for the statistical comparison in the simi
 
 This test would be used if you are fundamentally interested in the similarity of two (or more) spatial point patterns. Do incidences of some form of cancer have a similar spatial pattern to the locations of known risk factors? Does crime have a similar spatial pattern as drinking establishments? Is the spatial pattern of exports similar to the spatial pattern of imports? Additionally, this spatial point pattern test can be used in longitudinal contexts as well: Is the spatial pattern of crime this year similar to the spatial pattern of crime last year, or ten years ago?
 
+> Note: this document is geared towards the original SPPT and the R function `sspt()`. There is also a function `sppt_boot()` which performs a SPPT with resampling of both Base and Test datasets. In addition, Wheeler et al. (2018) discusses several limitations of Andresen's original SPPT and propose to use a proportion difference test per areal unit. See the vignette 'Proportion difference tests' and the function `sppt_diff()` for more information.
 
 ## Brief explanation of SPPT procedure
 
@@ -37,9 +38,11 @@ This procedure allows for statistically significant changes/differences to be id
 
 ## An extended explanation of SPPT procedure
 
-The first step for the test is to identify the necessary data for analysis. Though a somewhat manifest statement, there are some data conditions necessary to conduct the test. At this time, two geo-referenced point-based data sets for comparison are necessary. The geo-referencing is necessary because each point must be assigned to an individual areal unit of analysis. The areal unit data may take any number of different forms: a set of grids placed over the study area, neighborhood boundaries, census tracts, or some other form of census boundary areas (census block groups, dissemination areas, output areas, and so on). Though all of the examples just listed would have complete coverage over the study area, this is not necessary for the test. Rather, all of the geo-referenced point data need to be assigned to an area; this becomes particularly important for some research questions. Briefly, street segments have been used in applications of this spatial point pattern test; street segments are polyline files that do not have complete coverage over a study area, by definition of the data. During the geocoding process, points are often placed on the appropriate side of the street based on the address locator such that the points are not directly on the polyline. This can be overcome through the use of small-area buffers around each street segment to place each geo-referenced point within, but there will still be empty spaces between the buffers.
+The first step for the test is to identify the necessary data for analysis. Though a somewhat manifest statement, there are some data conditions necessary to conduct the test. At this time, two geo-referenced point-based data sets for comparison are necessary. The geo-referencing is necessary because each point must be assigned to an individual areal unit of analysis. The areal unit data may take any number of different forms: a set of grids placed over the study area, neighborhood boundaries, census tracts, or some other form of census boundary areas (census block groups, dissemination areas, output areas, and so on).
 
-Once all of the necessary data are collected, the first decision that needs to be made is which geo-referenced point data set shall be deemed the base data set and the test data set; the base data are considered the baseline. From the perspective of undertaking the test, this choice may be of little consequence, but there may be “natural” choices. For example, if the spatial point patterns of a phenomenon are being compared over time, 2003 and 2016, a natural choice is to have the 2003 data as the base data set and the 2016 data as the test data set. In this situation, the implicit question is whether the 2016 data have a similar spatial pattern to the 2003 data: has something changed over the years?
+Though all of the examples just listed would have complete coverage over the study area, this is not necessary for the test. Rather, all of the geo-referenced point data need to be assigned to an area; this becomes particularly important for some research questions. Briefly, street segments have been used in applications of this spatial point pattern test; street segments are polyline files that do not have complete coverage over a study area, by definition of the data. During the geocoding process, points are often placed on the appropriate side of the street based on the address locator such that the points are not directly on the polyline. This can be overcome through the use of small-area buffers around each street segment to place each geo-referenced point within, but there will still be empty spaces between the buffers.
+
+Once all of the necessary data are collected, the first decision that needs to be made is which geo-referenced point data set shall be deemed the base data set and the test data set; the base data are considered the baseline. From the perspective of undertaking the test, this choice may be of little consequence, but there may be “natural” choices. For example, if the spatial point patterns of a phenomenon are being compared over time, 2003 and 2016, a natural choice is to have the 2003 data as the base data set and the 2016 data as the test data set. In this situation, the implicit question is whether the 2016 data have a similar spatial pattern to the 2003 data: has something changed over the years? (Note, however, Wheeler et al. (2018) and the vignette 'Proportion difference tests' in this package.)
 
 The base data set is manipulated the least during the test. Each geo-referenced point is assigned to an areal unit, the number of points within each areal unit is aggregated, and the percentage of the points within each areal unit is calculated. This allows for the comparison of data sets with different numbers of points. This set of percentages will then be used to compare to the test data set that undergoes a Monte Carlo simulation process.
 
@@ -49,9 +52,19 @@ This information can then be applied to calculate a global Index of Similarity, 
 
 $$S = \frac{\sum_{i=1}^n s_i}{n}$$
 
-where $n$ is the number of areas, $s_i$ is equal 1 if the spatial pattern of two data sets is considered similar for areal unit $i$, and 0 otherwise. This Index of Similarity, then, represents the proportion of areal units that exhibit similar spatial patterns. There are two Indices of Similarity: the standard and robust global S-values. The standard Index of Similarity uses all of the areal units to measure $n$.  The robust S-value, however, is calculated only considering the number of areal units that actually have events occurring within them, in either the base of test data sets. This distinction can become important when the number of areal units outnumbers the number of events being investigated: relatively rare criminal events and street segments, for example. In this latter situation there may only be 1,000 criminal events and 10,000 street segments. In such an example, even if the test data criminal events are all on different street segments than the test data criminal events (the Index of Similarity should be zero), the standard global S-value will be 0.80 because of al the zero values that will appear “similar” within the test. The robust global S-value only considers where the events actually occur and will return a robust global S-value of zero, in this case. The output from the spatial point pattern test can also be mapped such that the researcher can visualize where the two geo-referenced point-based data sets are (dis)similar.
+where $n$ is the number of areas, $s_i$ is equal 1 if the spatial pattern of two data sets is considered similar for areal unit $i$, and 0 otherwise. This Index of Similarity, then, represents the proportion of areal units that exhibit similar spatial patterns.
 
-The last decision to be made is whether the two spatial point patterns are to be considered similar, or not. This is done using the (robust) global S-Index value. Though there is no statistical method of identifying a threshold for similarity, a rule of thumb has been used in the application of this test. There are rules of thumb for the interpretation of many statistics: at what point does R2 indicate an acceptable level for goodness-of-fit? The rule of thumb used in the current context relates to the literature that considers multicollinearity in a multiple regression context and bivariate correlations. With regard to the multiple regression context, the variance inflation factor is often used to measure the degree of multicollinearity. O’Brien (2007) states that variance inflation factors ranging from 5 to 10 (and greater, of course) may be cause for concern. In a bivariate correlation context (most similar to the application of this spatial point pattern test), this corresponds to correlation coefficients ranging from 0.80 to 0.90—Cohen (1988) considers lower levels of correlation to be considered “strong” but these higher values are considered to be more conservative. Consequently, the research implementing this test most often uses 0.80 as a threshold for similarity. However, it should be noted that this threshold is not, and should not, be considered in a binary context such as statistical significance. As the S-Index value approaches 0.80, the two spatial point patterns should be considered approaching similarity.
+There are three global Indices of Similarity: the standard S-index, the robust S-index, and the Generalized S-index:
+
+- The **standard** Index of Similarity uses all of the areal units to measure $n$.
+
+- The **robust** S-index considers only the number of areal units that actually have events occurring within them, in either the base of test data sets.
+
+- The **generalized** S-index (Boivin & de Melo 2019) uses as the denominator $min(n, X_{min})$: the minimum of either the total number of areas or the minimum number of events in either base or test.
+
+The distinction can become important when the number of areal units outnumbers the number of events being investigated: relatively rare criminal events and street segments, for example. In this latter situation there may only be 1,000 criminal events and 10,000 street segments. In such an example, even if the test data criminal events are all on different street segments than the test data criminal events (the Index of Similarity should be zero), the standard global S-value will be 0.80 because of al the zero values that will appear “similar” within the test. The robust global S-index only considers where the events *actually* occur. The generalized S-index considers the number of areas where the events *could have oaccurred*, a subtly different distinction. When the number of areas exceeds the number of events, the maximal similarity is indeed the number of areas ($n$). However, when the frequency of (at least) one phenomenon is lower than the number of areas, the maximal similarity is given by the lowest number of events ($X_{min}$), because the maximal possible number of areas with at least one event is equal to the lowest number of events (Bernasco & Steenbeek 2017).
+
+The last decision to be made is whether the two spatial point patterns are to be considered similar, or not. Though there is no statistical method of identifying a threshold for similarity, a rule of thumb has been used in the application of this test. There are rules of thumb for the interpretation of many statistics: at what point does $R^2$ indicate an acceptable level for goodness-of-fit? The rule of thumb used in the current context relates to the literature that considers multicollinearity in a multiple regression context and bivariate correlations. With regard to the multiple regression context, the variance inflation factor is often used to measure the degree of multicollinearity. O’Brien (2007) states that variance inflation factors ranging from 5 to 10 (and greater, of course) may be cause for concern. In a bivariate correlation context (most similar to the application of this spatial point pattern test), this corresponds to correlation coefficients ranging from 0.80 to 0.90—Cohen (1988) considers lower levels of correlation to be considered “strong” but these higher values are considered to be more conservative. Consequently, the research implementing this test most often uses 0.80 as a threshold for similarity. However, it should be noted that this threshold is not, and should not, be considered in a binary context such as statistical significance. As the S-Index value approaches 0.80, the two spatial point patterns should be considered approaching similarity.
 
 The general underlying principle for this spatial point pattern test is that the spatial pattern of the base data set is given (the percentages for the individual areal units are just calculated), but the spatial pattern for the test data set is one possible realization of the actual spatial point pattern. The randomization process maintains the underlying spatial pattern (data generating process) of the test data set, while creating sampling variation allowing for nonparametric statistical inference through the calculation of confidence intervals.
 
@@ -68,31 +81,28 @@ Spatial objects areas.sp, points1.sp, and points2.sp, from now on referred to as
 
 ```{r, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"}
 plot(areas.sp)
+text(coordinates(areas.sp), label = areas.sp$ID)
 points(points1.sp, col="blue", pch = 19)
 points(points2.sp, col="red", pch = 15)
-text(coordinates(areas.sp), label = areas.sp$ID, font = 2)
 ```
 
 The areas' ID numbers are printed in black, placed at the area centroid. The base points are blue circles, and the test points are red squares.
 
-For illustrative purposes, let's remove all points from area `15` (which happen to have an `ID` of `5` in both the base dataset and the test dataset:
-
-```{r}
-points1 <- points1.sp[points1.sp$ID != 5, ]
-points2 <- points2.sp[points2.sp$ID != 5, ]
-```
-
-So the new data looks like this:
+For illustrative purposes, let's keep a selection of points and plot again:
 
 ```{r, fig.show = 'hold', fig.height = 6, fig.width = 6, fig.align = "center"}
+# Keep only red points with ID == 1:5
+points1 <- points1.sp[points1.sp$ID != 0, ]
+points2 <- points2.sp[points2.sp$ID %in% 1:4, ]
+
+# plot
 plot(areas.sp)
-points(points1, col="grey", pch = 19)
-points(points2, col="grey", pch = 19)
-points(points1[areas.sp, ], col="blue", pch = 19)
-points(points2[areas.sp, ], col="red", pch = 15)
-text(coordinates(areas.sp), label = areas.sp$ID, font = 2)
+text(coordinates(areas.sp), label = areas.sp$ID)
+points(points1, col="blue", pch = 19)
+points(points2, col="red", pch = 15)
 ```
 
+One blue point cannot be assigned to an areal unit and will be removed (automatically) from analysis.
 
 ### Running the function
 
@@ -139,12 +149,24 @@ toy.sp@data
 | localS.robust     | the robust version of the variable “localS”, with a value of “NA” if “SumBseTstPts” is zero       |
 | similarity.robust     | the robust version of the variable “similarity”, with a value of “NA” if “SumBseTstPts” is zero       |
 | globalS.robust     | the robust global S-index value for the test, the same value for each unit of analysis, with a value of “NA” if “SumBseTstPts” is zero      |
+| generalizedS.robust     | the generalized robust global S-index value for the test, the same value for each unit of analysis   |
 
-The standard and robust global S-values can be extracted as such, respectively: `mean(toy.sp$globalS)` and `mean(toy.sp$globalS.robust, na.rm=TRUE)`. A convenience function is provided to output these values in a list:
+There were `r sum(toy.sp$NumBsePts)` blue points and `r sum(toy.sp$NumTstPts)` red points overlapping areal units (see the second figure). Therefore `sum(toy.sp$NumBsePts)` equals `r sum(toy.sp$NumBsePts)` and `sum(toy.sp$NumTstPts)` equals `r sum(toy.sp$NumTstPts)`.
+
+A convenience function is provided to output the global S-values in a list:
 
 ```{r}
 summary_sppt(toy.sp)
 ```
+
+These S-values are different because:
+
+- the standard global S-value takes the sum of `toy.sp$similarity` and divides this by the total number of areas (`r nrow(areas.sp)`).
+
+- the robust global S-value only considers areas that had any event in them (either in Base or Test), i.e. areas with ID `r paste(as.numeric(as.character(toy.sp$ID[toy.sp$NumBsePts + toy.sp$NumTstPts > 0])), collapse = ", ")`. These are `r length(toy.sp$ID[toy.sp$NumBsePts + toy.sp$NumTstPts > 0])` areas. The robust global S-value is calculated by taking the sum of `toy.sp$similarity` for only those areas, and dividing this by `r length(toy.sp$ID[toy.sp$NumBsePts + toy.sp$NumTstPts > 0])`.
+
+- the generalized global S-value considers areas that had any event in them (either in Base or Test). The denominator, however, is the minimum of this number of areas (`r length(toy.sp$ID[toy.sp$NumBsePts + toy.sp$NumTstPts > 0])`) and the minimum number of points (`r sum(toy.sp$NumBsePts)` in Base and `r sum(toy.sp$NumTstPts)` in Test). This is the minimum of `r length(toy.sp$ID[toy.sp$NumBsePts + toy.sp$NumTstPts > 0])` and `r min(sum(toy.sp$NumBsePts), sum(toy.sp$NumTstPts))`, which is `r min(length(toy.sp$ID[toy.sp$NumBsePts + toy.sp$NumTstPts > 0]), sum(toy.sp$NumBsePts), sum(toy.sp$NumTstPts))`.
+
 
 
 ## An example importing data for use in sppt
@@ -194,12 +216,12 @@ points(burglary2016, col="red", pch=16, cex=.3)
 Using the default values for sppt, as above:
 
 ```{r}
+set.seed(244)
 myoutput <- sppt(burglary2003, burglary2016, das, nsamples = 200, percpoints = 85, conf_level = 95)
 ```
 
 ```{r}
-mean(myoutput$globalS) 
-mean(myoutput$globalS.robust, na.rm=TRUE) 
+summary_sppt(myoutput)
 ```
 
 ```{r}
@@ -215,7 +237,7 @@ plot(myoutput[which(myoutput$localS == 1),], col="#d7191c", add = TRUE)
 plot(myoutput[which(myoutput$localS == 0),], col="#ffffbf", add = TRUE)
 ```
 
-Blue refers to a statistically significant decrease between 2003 and 2016 in the percentage of burglaries in that area, red refers to a statistically significant increase, and yellow refers to statistically insignificant differences. 
+Blue refers to a statistically significant decrease between 2003 and 2016 in the percentage of burglaries in that area, red refers to a statistically significant increase, and yellow refers to statistically non-significant differences.
 
 The output of the test (including all the variables) can be exported as a shapefile:
 
@@ -224,12 +246,45 @@ rgdal::writeOGR(obj = myoutput, dsn = "C:/My/File/Path/Here", layer = "Burglary_
 ```
 
 
+## An example with fewer points in both Base and Test
+
+```{r, fig.height = 6, fig.width = 6, fig.align = "center"}
+plot(das, lwd = .5)
+points(burglary2003[1:400, ], col="blue", pch=16, cex=.3)
+points(burglary2016[1:150, ], col="red", pch=16, cex=.3)
+```
+
+Using the default values for `sppt()`:
+
+```{r}
+set.seed(244)
+myoutput <- sppt(burglary2003[1:400, ], burglary2016[1:150, ], das)
+```
+
+```{r}
+summary_sppt(myoutput)
+```
+
+The standard global S-value is very high because each areal unit that has no Base or Test events also contributes "similarity" to the global value. The robust S-value is much smaller because it only considers area where at least one event occurred (in Base or Test). This is the case in `sum(myoutput$SumBseTstPts > 0) =` `r sum(myoutput$SumBseTstPts > 0)` areas. The generalized robust S-value is a bit higher: the number of events in Base is `r sum(myoutput$NumBsePts)` and the number of events in Test is `r sum(myoutput$NumTstPts)`, while the number of areas is `r nrow(das)`, so it uses `r min(sum(myoutput$NumBsePts), sum(myoutput$NumTstPts), nrow(das))` as the denominator, in this case leading to a slightly higher S-value than the robust S.
+
+
+
 ## References
 
-Anselin, L. (1995). Local indicators of spatial association -- LISA. *Geographical Analysis*, 27(2), 93 - 115.
+Andresen, M.A. (2009). Testing for similarity in area-based spatial patterns: a nonparametric Monte Carlo approach. *Applied Geography*, 29(3), 333-345.
+
+Andresen, M.A. (2016). An area-based nonparametric spatial point pattern test: the test, its applications, and the future. *Methodological Innovations*, 9(1), 1-11.
+
+Anselin, L. (1995). Local indicators of spatial association -- LISA. *Geographical Analysis*, 27(2), 93-115.
+
+Bernasco, W. and Steenbeek, W. (2017). More places than crimes: implications for evaluating the law of crime concentration at place. *Journal of Quantitative Criminology*, 33(3), 451-467.
+
+Boivin, R., & de Melo, S. N. (2019). Comparing global spatial patterns of crime. *Policing: An International Journal*, 42(6), 1097-1106.
 
 Cohen, J. (1988) *Statistical power analysis for the behavioral sciences* (2nd ed.). Hillsdale, NJ: Erlbaum.
 
-O’Brien, R.M. (2007). A caution regarding rules of thumb for variance inflation factors. *Quality & Quantity*, 41(5), 673 – 690.
+O’Brien, R.M. (2007). A caution regarding rules of thumb for variance inflation factors. *Quality & Quantity*, 41(5), 673-690.
 
-Ratcliffe, J.H. (2004). Geocoding crime and a first estimate of a minimum acceptable hit rate. *International Journal of Geographical Information Science*, 18(1), 61 - 72.
+Ratcliffe, J.H. (2004). Geocoding crime and a first estimate of a minimum acceptable hit rate. *International Journal of Geographical Information Science*, 18(1), 61-72.
+
+Wheeler, A. P., Steenbeek, W., & Andresen, M. A. (2018). Testing for similarity in area‐based spatial patterns: Alternative methods to Andresen's spatial point pattern test. *Transactions in GIS*, 22(3), 760-774.

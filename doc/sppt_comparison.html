@@ -12,7 +12,7 @@
 
 <meta name="author" content="Wouter Steenbeek" />
 
-<meta name="date" content="2020-10-08" />
+<meta name="date" content="2020-10-09" />
 
 <title>Comparing R vs Java</title>
 
@@ -319,7 +319,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">Comparing R vs Java</h1>
 <h4 class="author">Wouter Steenbeek</h4>
-<h4 class="date">2020-10-08</h4>
+<h4 class="date">2020-10-09</h4>
 
 
 
@@ -389,13 +389,13 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## 3     12.5     25.0      0          1 0.8333333             0             0
 ## 4      0.0     12.5      0          1 0.8333333             0             0
 ## 5      0.0     12.5      0          1 0.8333333             0             0
-##   similarity.robust globalS.robust
-## 0                 1      0.8333333
-## 1                 0      0.8333333
-## 2                 1      0.8333333
-## 3                 1      0.8333333
-## 4                 1      0.8333333
-## 5                 1      0.8333333</code></pre>
+##   similarity.robust globalS.robust generalizedS.robust
+## 0                 1      0.8333333           0.8333333
+## 1                 0      0.8333333           0.8333333
+## 2                 1      0.8333333           0.8333333
+## 3                 1      0.8333333           0.8333333
+## 4                 1      0.8333333           0.8333333
+## 5                 1      0.8333333           0.8333333</code></pre>
 <p>We see differences already in the calculation of PctBsePts (PercentBasePoints) and PctTstPts (PercentTestPoints). The reason is a difference in the way the methods handle points that lie outside the polygons.</p>
 <p>As you can see in the figure above, there are 9 base points in total, and 10 test points in total. But in each points dataset, there is one point outside the polygon areas.</p>
 <p>In the R code, a point that lies outside the areas is ignored completely. So it is not included when counting the number of points per areal unit, and it is also not included for the calculation of the percentage of points per unit (i.e. in the denominator). In contrast, the Java app <em>includes</em> a point that is located outside the areal units in the denominator. The R code is correct, because we are interested in the increase/decrease of event occurrence <em>in a particular set of areal units</em>. By including events outside the areal units under study, the percentages within the areal units don’t make much sense anymore.</p>
@@ -465,19 +465,22 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 ## 3     12.5     25.0      0          1 0.8333333             0             0
 ## 4      0.0     12.5      0          1 0.8333333             0             0
 ## 5      0.0     12.5      0          1 0.8333333             0             0
-##   similarity.robust globalS.robust
-## 0                 1      0.8333333
-## 1                 0      0.8333333
-## 2                 1      0.8333333
-## 3                 1      0.8333333
-## 4                 1      0.8333333
-## 5                 1      0.8333333</code></pre>
+##   similarity.robust globalS.robust generalizedS.robust
+## 0                 1      0.8333333           0.8333333
+## 1                 0      0.8333333           0.8333333
+## 2                 1      0.8333333           0.8333333
+## 3                 1      0.8333333           0.8333333
+## 4                 1      0.8333333           0.8333333
+## 5                 1      0.8333333           0.8333333</code></pre>
 <p>These S-values can also be accessed through the convenience function <code>summary_sppt()</code>:</p>
 <div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="kw">summary_sppt</span>(toy_r_new)</span></code></pre></div>
 <pre><code>## $globalS.standard
 ## [1] 0.8333333
 ## 
 ## $globalS.robust
+## [1] 0.8333333
+## 
+## $globalS.generalized.robust
 ## [1] 0.8333333</code></pre>
 <p>We see that the <code>sppt()</code> R function can reproduce the Java output exactly.</p>
 </div>
@@ -549,6 +552,9 @@ Vancouver Test points
 ## [1] 0.1851852
 ## 
 ## $globalS.robust
+## [1] 0.1775701
+## 
+## $globalS.generalized.robust
 ## [1] 0.1775701</code></pre>
 <p>The standard global S-value is slightly different from the value reported by the Java application. As the it refers to the proportion of areas that had stable proportions of crime, the difference in standard global S-value is caused by a difference in the underlying S-Index (which is a value that can differ for each area, indicating stability or change). Are these vectors equal?</p>
 <div class="sourceCode" id="cb29"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a><span class="kw">table</span>(vancouver_r_df<span class="op">$</span>SIndex <span class="op">==</span><span class="st"> </span>vancouver_java_df<span class="op">$</span>SIndex)</span></code></pre></div>

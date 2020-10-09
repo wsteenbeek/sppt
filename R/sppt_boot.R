@@ -140,7 +140,7 @@ sppt_boot <- function(base_points.sp, test_points.sp, uoa.sp, nsamples=200, perc
   # Function: for a sample of points, calculate number of points in each unit of analysis
   #################################
 
-  calculate.points.per.unit <- function(nsample, data_over_results){
+  calculate.points.per.unit <- function(data_over_results, bootstrap){
 
     # how many points need to be sampled in each iteration?
     if(bootstrap){
@@ -177,12 +177,12 @@ sppt_boot <- function(base_points.sp, test_points.sp, uoa.sp, nsamples=200, perc
   #################################
 
   # get all samples in one list
-  allsamples <- lapply(1:nsamples, function(x, y) calculate.points.per.unit(x, basedata_over_results))
+  allsamples <- lapply(1:nsamples, function(x) calculate.points.per.unit(basedata_over_results, bootstrap = bootstrap))
   # extract the percentage objects only, per areal unit
   allperc.base <- do.call(cbind, lapply(allsamples, function(x) x["perc"]))
 
   # get all samples in one list
-  allsamples <- lapply(1:nsamples, function(x, y) calculate.points.per.unit(x, testdata_over_results))
+  allsamples <- lapply(1:nsamples, function(x, y) calculate.points.per.unit(testdata_over_results, bootstrap = bootstrap))
   # extract the percentage objects only, per areal unit
   allperc.test <- do.call(cbind, lapply(allsamples, function(x) x["perc"]))
 
@@ -231,6 +231,14 @@ sppt_boot <- function(base_points.sp, test_points.sp, uoa.sp, nsamples=200, perc
   outcome$SIndex.robust <- -1 * outcome$localS.robust
   outcome$similarity.robust <- ifelse(outcome$SIndex.robust == 0, 1, 0)
   outcome$globalS.robust <- mean(outcome$similarity.robust, na.rm = TRUE)
+
+  ### Generalized robust globalS
+  denom_gen <- min(
+    sum(outcome$NumBsePts),
+    sum(outcome$NumTstPts),
+    sum(outcome$SumBseTstPts > 0)
+  )
+  outcome$generalizedS.robust <- sum(outcome$similarity.robust, na.rm=TRUE) / denom_gen
 
   #################################
   # Create outcome SpatialPolygon with data
