@@ -23,8 +23,8 @@ boundaries using the same original point datasets.
 The most recent version of the package is:
 
 > Steenbeek, W., Vandeviver, C. Andresen, M.A., Malleson, N., Wheeler,
-> A. (2018). *sppt: Spatial Point Pattern Test*. R package version
-> 0.2.3. URL: <https://github.com/wsteenbeek/sppt>
+> A. *sppt: Spatial Point Pattern Test*. R package version 0.2.3. URL:
+> <https://github.com/wsteenbeek/sppt>
 
 An archive of older versions of the package can be found here:
 <https://github.com/wsteenbeek/sppt-archive>.
@@ -102,13 +102,24 @@ output@data
 #> 3     12.5     25.0      0          1 0.8333333             0             0
 #> 4      0.0     12.5      0          1 0.8333333             0             0
 #> 5      0.0     12.5      0          1 0.8333333             0             0
-#>   similarity.robust globalS.robust generalizedS.robust
-#> 0                 1      0.8333333           0.8333333
-#> 1                 0      0.8333333           0.8333333
-#> 2                 1      0.8333333           0.8333333
-#> 3                 1      0.8333333           0.8333333
-#> 4                 1      0.8333333           0.8333333
-#> 5                 1      0.8333333           0.8333333
+#>   similarity.robust globalS.robust
+#> 0                 1      0.8333333
+#> 1                 0      0.8333333
+#> 2                 1      0.8333333
+#> 3                 1      0.8333333
+#> 4                 1      0.8333333
+#> 5                 1      0.8333333
+```
+
+The global S-values can be outputted directly using `summary_sppt()`:
+
+``` r
+summary_sppt(output)
+#> $globalS.standard
+#> [1] 0.8333333
+#> 
+#> $globalS.robust
+#> [1] 0.8333333
 ```
 
 ## Vignettes

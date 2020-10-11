@@ -54,7 +54,7 @@ $$S = \frac{\sum_{i=1}^n s_i}{n}$$
 
 where $n$ is the number of areas, $s_i$ is equal 1 if the spatial pattern of two data sets is considered similar for areal unit $i$, and 0 otherwise. This Index of Similarity, then, represents the proportion of areal units that exhibit similar spatial patterns.
 
-There are three global Indices of Similarity: the standard S-index, the robust S-index, and the Generalized S-index:
+<!-- There are three global Indices of Similarity: the standard S-index, the robust S-index, and the Generalized S-index:
 
 - The **standard** Index of Similarity uses all of the areal units to measure $n$.
 
@@ -63,6 +63,15 @@ There are three global Indices of Similarity: the standard S-index, the robust S
 - The **generalized** S-index (Boivin & de Melo 2019) uses as the denominator $min(n, X_{min})$: the minimum of either the total number of areas or the minimum number of events in either base or test.
 
 The distinction can become important when the number of areal units outnumbers the number of events being investigated: relatively rare criminal events and street segments, for example. In this latter situation there may only be 1,000 criminal events and 10,000 street segments. In such an example, even if the test data criminal events are all on different street segments than the test data criminal events (the Index of Similarity should be zero), the standard global S-value will be 0.80 because of al the zero values that will appear “similar” within the test. The robust global S-index only considers where the events *actually* occur. The generalized S-index considers the number of areas where the events *could have oaccurred*, a subtly different distinction. When the number of areas exceeds the number of events, the maximal similarity is indeed the number of areas ($n$). However, when the frequency of (at least) one phenomenon is lower than the number of areas, the maximal similarity is given by the lowest number of events ($X_{min}$), because the maximal possible number of areas with at least one event is equal to the lowest number of events (Bernasco & Steenbeek 2017).
+-->
+
+There are two Indices of Similarity: the standard S-index and the robust S-index:
+
+- The **standard** Index of Similarity uses all of the areal units to measure $n$.
+
+- The **robust** S-index considers only the number of areal units that actually have events occurring within them, in either the base of test data sets.
+
+The distinction can become important when the number of areal units outnumbers the number of events being investigated: relatively rare criminal events and street segments, for example. In this latter situation there may only be 1,000 criminal events and 10,000 street segments. In such an example, even if the test data criminal events are all on different street segments than the test data criminal events (the Index of Similarity should be zero), the standard global S-value will be 0.80 because of al the zero values that will appear “similar” within the test. The robust global S-index only considers where the events *actually* occur.
 
 The last decision to be made is whether the two spatial point patterns are to be considered similar, or not. Though there is no statistical method of identifying a threshold for similarity, a rule of thumb has been used in the application of this test. There are rules of thumb for the interpretation of many statistics: at what point does $R^2$ indicate an acceptable level for goodness-of-fit? The rule of thumb used in the current context relates to the literature that considers multicollinearity in a multiple regression context and bivariate correlations. With regard to the multiple regression context, the variance inflation factor is often used to measure the degree of multicollinearity. O’Brien (2007) states that variance inflation factors ranging from 5 to 10 (and greater, of course) may be cause for concern. In a bivariate correlation context (most similar to the application of this spatial point pattern test), this corresponds to correlation coefficients ranging from 0.80 to 0.90—Cohen (1988) considers lower levels of correlation to be considered “strong” but these higher values are considered to be more conservative. Consequently, the research implementing this test most often uses 0.80 as a threshold for similarity. However, it should be noted that this threshold is not, and should not, be considered in a binary context such as statistical significance. As the S-Index value approaches 0.80, the two spatial point patterns should be considered approaching similarity.
 
@@ -149,7 +158,8 @@ toy.sp@data
 | localS.robust     | the robust version of the variable “localS”, with a value of “NA” if “SumBseTstPts” is zero       |
 | similarity.robust     | the robust version of the variable “similarity”, with a value of “NA” if “SumBseTstPts” is zero       |
 | globalS.robust     | the robust global S-index value for the test, the same value for each unit of analysis, with a value of “NA” if “SumBseTstPts” is zero      |
-| generalizedS.robust     | the generalized robust global S-index value for the test, the same value for each unit of analysis   |
+
+<!-- | generalizedS.robust     | the generalized robust global S-index value for the test, the same value for each unit of analysis   | -->
 
 There were `r sum(toy.sp$NumBsePts)` blue points and `r sum(toy.sp$NumTstPts)` red points overlapping areal units (see the second figure). Therefore `sum(toy.sp$NumBsePts)` equals `r sum(toy.sp$NumBsePts)` and `sum(toy.sp$NumTstPts)` equals `r sum(toy.sp$NumTstPts)`.
 
@@ -165,7 +175,7 @@ These S-values are different because:
 
 - the robust global S-value only considers areas that had any event in them (either in Base or Test), i.e. areas with ID `r paste(as.numeric(as.character(toy.sp$ID[toy.sp$NumBsePts + toy.sp$NumTstPts > 0])), collapse = ", ")`. These are `r length(toy.sp$ID[toy.sp$NumBsePts + toy.sp$NumTstPts > 0])` areas. The robust global S-value is calculated by taking the sum of `toy.sp$similarity` for only those areas, and dividing this by `r length(toy.sp$ID[toy.sp$NumBsePts + toy.sp$NumTstPts > 0])`.
 
-- the generalized global S-value considers areas that had any event in them (either in Base or Test). The denominator, however, is the minimum of this number of areas (`r length(toy.sp$ID[toy.sp$NumBsePts + toy.sp$NumTstPts > 0])`) and the minimum number of points (`r sum(toy.sp$NumBsePts)` in Base and `r sum(toy.sp$NumTstPts)` in Test). This is the minimum of `r length(toy.sp$ID[toy.sp$NumBsePts + toy.sp$NumTstPts > 0])` and `r min(sum(toy.sp$NumBsePts), sum(toy.sp$NumTstPts))`, which is `r min(length(toy.sp$ID[toy.sp$NumBsePts + toy.sp$NumTstPts > 0]), sum(toy.sp$NumBsePts), sum(toy.sp$NumTstPts))`.
+<!-- - the generalized global S-value considers areas that had any event in them (either in Base or Test). The denominator, however, is the minimum of this number of areas (`r length(toy.sp$ID[toy.sp$NumBsePts + toy.sp$NumTstPts > 0])`) and the minimum number of points (`r sum(toy.sp$NumBsePts)` in Base and `r sum(toy.sp$NumTstPts)` in Test). This is the minimum of `r length(toy.sp$ID[toy.sp$NumBsePts + toy.sp$NumTstPts > 0])` and `r min(sum(toy.sp$NumBsePts), sum(toy.sp$NumTstPts))`, which is `r min(length(toy.sp$ID[toy.sp$NumBsePts + toy.sp$NumTstPts > 0]), sum(toy.sp$NumBsePts), sum(toy.sp$NumTstPts))`. -->
 
 
 
@@ -265,7 +275,7 @@ myoutput <- sppt(burglary2003[1:400, ], burglary2016[1:150, ], das)
 summary_sppt(myoutput)
 ```
 
-The standard global S-value is very high because each areal unit that has no Base or Test events also contributes "similarity" to the global value. The robust S-value is much smaller because it only considers area where at least one event occurred (in Base or Test). This is the case in `sum(myoutput$SumBseTstPts > 0) =` `r sum(myoutput$SumBseTstPts > 0)` areas. The generalized robust S-value is a bit higher: the number of events in Base is `r sum(myoutput$NumBsePts)` and the number of events in Test is `r sum(myoutput$NumTstPts)`, while the number of areas is `r nrow(das)`, so it uses `r min(sum(myoutput$NumBsePts), sum(myoutput$NumTstPts), nrow(das))` as the denominator, in this case leading to a slightly higher S-value than the robust S.
+The standard global S-value is very high because each areal unit that has no Base or Test events also contributes "similarity" to the global value. The robust S-value is much smaller because it only considers area where at least one event occurred (in Base or Test). This is the case in `sum(myoutput$SumBseTstPts > 0) =` `r sum(myoutput$SumBseTstPts > 0)` areas. <!--The generalized robust S-value is a bit higher: the number of events in Base is `r sum(myoutput$NumBsePts)` and the number of events in Test is `r sum(myoutput$NumTstPts)`, while the number of areas is `r nrow(das)`, so it uses `r min(sum(myoutput$NumBsePts), sum(myoutput$NumTstPts), nrow(das))` as the denominator, in this case leading to a slightly higher S-value than the robust S. -->
 
 
 
@@ -279,7 +289,7 @@ Anselin, L. (1995). Local indicators of spatial association -- LISA. *Geographic
 
 Bernasco, W. and Steenbeek, W. (2017). More places than crimes: implications for evaluating the law of crime concentration at place. *Journal of Quantitative Criminology*, 33(3), 451-467.
 
-Boivin, R., & de Melo, S. N. (2019). Comparing global spatial patterns of crime. *Policing: An International Journal*, 42(6), 1097-1106.
+<!-- Boivin, R., & de Melo, S. N. (2019). Comparing global spatial patterns of crime. *Policing: An International Journal*, 42(6), 1097-1106. -->
 
 Cohen, J. (1988) *Statistical power analysis for the behavioral sciences* (2nd ed.). Hillsdale, NJ: Erlbaum.
 

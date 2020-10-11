@@ -80,11 +80,21 @@ summary_globalS.generalized <- function(sppt.sp){
 #'
 #' @export
 summary_sppt <- function(sppt.sp){
-  return(
-    list(
-      globalS.standard = summary_globalS.standard(sppt.sp),
-      globalS.robust = summary_globalS.robust(sppt.sp),
-      globalS.generalized.robust = summary_globalS.generalized(sppt.sp)
+
+  if(is.na(summary_globalS.generalized(sppt.sp))){
+    return(
+      list(
+        globalS.standard = summary_globalS.standard(sppt.sp),
+        globalS.robust = summary_globalS.robust(sppt.sp)
       )
     )
+  } else {
+    return(
+      list(
+        globalS.standard = summary_globalS.standard(sppt.sp),
+        globalS.robust = summary_globalS.robust(sppt.sp),
+        globalS.generalized.robust = summary_globalS.generalized(sppt.sp)
+      )
+    )
+  }
 }

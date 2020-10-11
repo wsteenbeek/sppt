@@ -301,11 +301,11 @@ table(sapply(1:nrow(vancouver_java_df), function(x) {vancouver_java_df$ConfLowP[
 table(sapply(1:nrow(vancouver_java_df), function(x) {vancouver_java_df$ConfUppP[x] %in% reps.output[[2]][x,]} ))
 ```
 
-10 replications is enough to reproduce (exactly) many of the ConfLowP and ConfUppP of the Java application. Let's see the same output if we try 50 replications: 
+10 replications is enough to reproduce (exactly) many of the ConfLowP and ConfUppP of the Java application. Let's see the same output if we try 80 replications: 
 
 ```{r}
 set.seed(85335)
-reps.output <- replicate(50, sppt(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp)) # this will take some time
+reps.output <- replicate(80, sppt(vancouver_points1.sp, vancouver_points2.sp, vancouver_areas.sp)) # this will take some time
 reps.output <- lapply(c("ConfLowP", "ConfUppP"), function(y) do.call(cbind, sapply(reps.output, function(x) x@data[y])))
 ```
 
